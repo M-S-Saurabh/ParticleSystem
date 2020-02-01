@@ -10,8 +10,7 @@ void setup(){
 }
 
 void draw(){
-  fill(0,20);
-  rect(0,0, width, height);
+  background(0);
   if(mousePressed){
     int rdm = (int) random(2);
     if( rdm % 2 == 0){
@@ -36,28 +35,36 @@ class ParticleSystem{
     particles = new ArrayList();
     origin = start_locn.copy();
     this.splColor = splColor;
-    proj = new Projectile(start_locn, splColor);
+    if(splColor == water){
+      proj = new WaterSpellProjectile(start_locn, splColor);
+    }else{
+      proj = new FireSpellProjectile(start_locn, splColor);
+    }
   }
   
   void addParticle(){
-    PVector tempOrigin = new PVector(proj.location.x+random(-10,+10), proj.location.y);
-    particles.add(new Particle(tempOrigin, splColor));
+    PVector tempOrigin = new PVector(proj.location.x, proj.location.y+random(-10,+10));
+    if(splColor == water){
+      particles.add(new WaterSpellParticle(tempOrigin, splColor));
+    }else{
+      particles.add(new FireSpellParticle(tempOrigin, splColor));
+    }
   }
   
   void run(){
-    proj.run();
     if(proj.isDead()){
       // projectile died.
       return;
     }
+    proj.run();
     for(int i=0; i<20;i++){
       this.addParticle();
     }
-    for( Particle p : particles){
+    for(int i=0; i<particles.size(); i++){
+      Particle p = particles.get(i);
       p.run();
       if(p.isDead()){
-        PVector tempOrigin = new PVector(proj.location.x+random(-10,+10), proj.location.y);
-        p.restart(tempOrigin);
+        particles.remove(i);
       }
     }
   }

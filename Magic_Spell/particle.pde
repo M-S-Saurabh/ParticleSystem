@@ -8,9 +8,8 @@ class Particle{
   float alpha;
   float size = random(1,4);
   
-  Particle(PVector l, color splColor){
+  Particle(PVector l){
     restart(l);
-    this.splColor = splColor;
   }
   void run(){
     update();
@@ -37,9 +36,8 @@ class Particle{
     acceleration = new PVector(random(-0.05,0.01),random(-0.05,0.05));
     velocity = new PVector(random(-1.5,-0.5),random(0,0));
     location = l.copy();
-    lifespan = 20.0;
+    lifespan = 10.0;
     alpha = random(100,150);
-    splColor = color(red(splColor),green(splColor),blue(splColor),alpha);
     death = random(-10,10);
   }
   boolean isDead(){
@@ -48,5 +46,19 @@ class Particle{
     }else{
       return false;
     }
+  }
+}
+
+class WaterSpellParticle extends Particle{
+  WaterSpellParticle(PVector l, color splColor){
+    super(l);
+    this.splColor = color(red(splColor),green(splColor)+random(-100,100),blue(splColor),this.alpha);
+  }
+}
+
+class FireSpellParticle extends Particle{
+  FireSpellParticle(PVector l, color splColor){
+    super(l);
+    this.splColor = color(red(splColor),green(splColor)+random(-100,100),blue(splColor),this.alpha);
   }
 }

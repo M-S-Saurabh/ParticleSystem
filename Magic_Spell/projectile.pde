@@ -6,7 +6,7 @@ class Projectile{
   float lifespan;
   float death;
   float alpha;
-  float size = 20;
+  float size = 15;
   
   Projectile(PVector l, color splColor){
     restart(l);
@@ -35,9 +35,9 @@ class Projectile{
   }
   void restart(PVector l){
     acceleration = new PVector(0.1,random(-0.05,0.05));
-    velocity = new PVector(random(4.0,4.5),random(0,0));
+    velocity = new PVector(random(3.5,4.0),random(0,0));
     location = l.copy();
-    lifespan = 156.0;
+    lifespan = 1000;
     alpha = random(100,150);
     splColor = color(red(splColor),green(splColor),blue(splColor),alpha);
     death = random(-10,10);
@@ -48,5 +48,46 @@ class Projectile{
     }else{
       return false;
     }
+  }
+}
+
+void drawStar(float x, float y, float size){
+  float p = random(-5,5)+size;
+  int rdm = (int) random(3);
+  if( rdm % 3 == 0){
+    line (x+p, y, x, y);
+    line (x, y+p, x, y);
+    line (x, y, x-p, y);
+    line (x, y, x, y-p);
+  }else{
+    ellipse(x, y, p*0.8, p);
+  }
+}
+
+class WaterSpellProjectile extends Projectile{
+  WaterSpellProjectile(PVector start_locn, color splColor){
+    super(start_locn, splColor);
+  }
+  
+  @Override
+  void display(){
+    color tempColor = color(red(splColor),green(splColor)+random(-100,100),blue(splColor));
+    stroke(tempColor);
+    fill(tempColor);
+    drawStar(location.x, location.y, size);
+  }
+}
+
+class FireSpellProjectile extends Projectile{
+  FireSpellProjectile(PVector start_locn, color splColor){
+    super(start_locn, splColor);
+  }
+  
+  @Override
+  void display(){
+    color tempColor = color(red(splColor),green(splColor)+random(-100,100),blue(splColor));
+    stroke(tempColor);
+    fill(tempColor);
+    drawStar(location.x, location.y, size);
   }
 }
