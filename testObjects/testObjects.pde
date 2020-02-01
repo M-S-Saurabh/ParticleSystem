@@ -1,7 +1,7 @@
 PShape[] objects;
 PShape P;
 
-String objectsFolder = "/home/mylav008/Desktop/CSCI 5611/testObjects/trees"; 
+String objectsFolder = "trees"; 
 int totalNumObjects = 0;
 
 // Taken from: https://processing.org/examples/directorylist.html
@@ -30,7 +30,7 @@ void preloadObjects(String folderName){
 void setup(){
   size(1000,1000,P3D);
   //preloadObjects(objectsFolder);
-  P = loadShape("BirchTree_Dead_1.obj");
+  P = loadShape("BirchTree_1.obj");
 }
 
 int lifetime = 0;
@@ -45,6 +45,7 @@ void draw(){
   //  lifetime = 0;
   //}
   translate(width/2, height/2);
+  rotateX(radians(180)) ;
   shapeMode(CENTER);
   shape(P, 0,0, 500,500);
   
