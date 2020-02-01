@@ -1,6 +1,7 @@
 PShape[] objects;
 PShape P;
-
+PShape F ;
+float z = 10.0 ;
 String objectsFolder = "trees"; 
 int totalNumObjects = 0;
 
@@ -29,8 +30,19 @@ void preloadObjects(String folderName){
 
 void setup(){
   size(1000,1000,P3D);
-  //preloadObjects(objectsFolder);
+  //size(500, 500, P3D);
+  noFill();
+  float fov = PI/3.0;
+  float cameraZ = (height/2.0) / tan(fov/2.0);
+  perspective(fov, float(width)/float(height), 
+              cameraZ/10.0, cameraZ*10.0);
+  //translate(150, 150, 0);
+  //rotateX(-PI/6);
+  //rotateY(PI/3);
+  //box(45);
+  perspective();
   P = loadShape("BirchTree_1.obj");
+  F = loadShape("ModularFloor.obj");
 }
 
 int lifetime = 0;
@@ -44,9 +56,39 @@ void draw(){
   //  index  = (index+1) % totalNumObjects;
   //  lifetime = 0;
   //}
-  translate(width/2, height/2);
+  
+  if(keyPressed && keyCode == UP){
+    z += 10 ;
+  }
+  
+  if(keyPressed && keyCode == DOWN){
+    z -= 10 ;
+  }
+  pushMatrix();
+  translate(width/2, height/2, z);
   rotateX(radians(180)) ;
   shapeMode(CENTER);
-  shape(P, 0,0, 500,500);
+  shape(P, 100,100, 500,500);
+  popMatrix() ;
   
+  pushMatrix();
+  translate(width/2, height/2, -10);
+  //rotateX(radians(180)) ;
+  shapeMode(CENTER);
+  shape(F, 100,100, 500,500);
+  popMatrix() ;
+  
+  //pushMatrix();
+  //translate(width/2+100, height/2+100, -10);
+  ////rotateX(radians(180)) ;
+  //shapeMode(CENTER);
+  //shape(F, 100,100, 500,500);
+  //popMatrix() ;
+  
+  //pushMatrix();
+  //translate(width/2, height/2+100, -10);
+  ////rotateX(radians(180)) ;
+  //shapeMode(CENTER);
+  //shape(F, 100,100, 500,500);
+  //popMatrix() ;
 }
