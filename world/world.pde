@@ -12,8 +12,6 @@ ArrayList<PVector> waterPoints;
 
 // MagiSpell system
 MagicSpell ms;
-color water = color(12,160,240);
-color fire = color(236,85,17);
 
 
 // FireParticles System
@@ -23,18 +21,27 @@ boolean burning = false ;
 int burningCount = 30 ;
 float fireRadius = 10 ;
 
+boolean debug_collisions = true;
+ArrayList<collisionSphere> collisionList = null;
+
 void setup(){
   
   size(1000,1000,P3D);
+  // Setup the camera
   cam = new PeasyCam(this, 425);
   cam.setMinimumDistance(50);
   cam.setMaximumDistance(800);
   cam.setYawRotationMode();
   
-  if(waterPoints == null){waterPoints = new ArrayList<PVector>();}
+  waterPoints = new ArrayList<PVector>();
   waterPoints.add(new PVector(2,45,0));
   
+  collisionList = new ArrayList<collisionSphere>();
+  collisionList.add(new collisionSphere(0,42,0,8)); // Mountain top
+  collisionList.add(new collisionSphere(190,80,0,25)); // Forest heart
+  
   noStroke();
+  // load objects
   sh = loadShape("OBJ/Terrain.obj");
   icemage = loadShape("iceMage.obj");
   W = loadShape("OBJ/Willow_3.obj");
@@ -65,6 +72,16 @@ void translateCamera(){
 void runParticles(){
   if(waterfall != null){waterfall.run();}
   if(ms != null){ms.run();}
+  if (burning){
+    burningCount-= 1 ;
+  }
+  if(fires != null){
+    fires.run();
+    fireRadius += 10.0 ;
+  }
+  
+  if(collisionList.get(0).checkCollision()){toggleWaterfall();}
+  if(collisionList.get(1).checkCollision()){toggleForestfire();}
 }
 
 void draw(){
@@ -72,11 +89,23 @@ void draw(){
   lights();
   stroke(255);
   fill(255);
-  
   if(keyPressed && key == CODED){
     translateCamera();
   }
+  drawWorld();
+  runParticles();
+  surface.setTitle("World FPS: "+ str(round(frameRate)) +"\n") ;
+}
+
+void drawWorld(){
+  // Draw collision spheres to debug.
+  if(debug_collisions){
+    for(collisionSphere sph : collisionList){
+      sph.drawSelf();
+    }
+  }
   
+  // Draw the hill
   pushMatrix();
   rotateX(PI);
   rotateY(PI/2);
@@ -101,35 +130,15 @@ void draw(){
   box(600,2,600);
   popMatrix();
   
-  int start = millis();
-  runParticles();
-  int end = millis();
-  if(end - start > 0){
-    print("FPS:"+str(1000/(end-start))+"\n");
-  }
-  
-  if (burning){
-    burningCount-= 1 ;
-  }
-  
   if (burningCount > 0){
     greenScene();
   }
-  
   if (burningCount <= 0){
     burntScene();
   }
-  
-  if(fires != null){
-    fires.run();
-    fireRadius += 10.0 ;
-  }
-  
-  surface.setTitle("World FPS: "+ str(round(frameRate)) +"\n") ;
 }
 
 void greenScene(){
-  
   pushMatrix();
   rotateX(PI);
   translate(170, -100, 10);
@@ -243,11 +252,30 @@ void burntScene(){
   translate(190,-100, -10);
   scale(10.0);
   shape(Dw);
-  popMatrix() ;
-  
-  
+  popMatrix() ; 
 }
 
+void toggleWaterfall(){
+  if(waterfall == null){
+    for(PVector point: waterPoints){
+      waterfall = new Waterfall(point);
+    }
+  }else{
+    waterfall = null;
+  }
+}
+
+void toggleForestfire(){
+  if(fires == null){ 
+    fires = new FireParticleSystem();
+    fires.firePoints.add(fireOrigin);
+    burning = true ;
+  }else{
+    burningCount = 30 ;
+    fires = null ;
+    burning = false ;
+  }
+}
 
 void keyPressed() {
   print("keyCode is:"+keyCode+"\n");
@@ -260,32 +288,25 @@ void keyPressed() {
     cam.setFreeRotationMode();
   }
   
-  // Pressing M key: shoots magic spell
+  // Pressing M key: shoots water spell
   if(keyCode == 77){
-    ms = new MagicSpell(new PVector(100,75,150), new PVector(2,45,0), water);
+    if(ms != null){collisionList.get(0).resetDetector();}
+    ms = new WaterSpell(new PVector(100,75,150), new PVector(2,45,0));
+    collisionList.get(0).addDetector(ms.proj);
+  }
+  // Pressing N key: shoots fire spell
+  if(keyCode == 77){
+    if(ms != null){collisionList.get(1).resetDetector();}
+    ms = new FireSpell(new PVector(100,75,150), new PVector(190,80,0));
+    collisionList.get(1).addDetector(ms.proj);
   }
   
   // Pressing W key: toggles water flow
   if(keyCode == 87){
-    if(waterfall == null){
-      for(PVector point: waterPoints){
-        waterfall = new Waterfall(point);
-      }
-    }else{
-      waterfall = null;
-    }
+    toggleWaterfall();
   }
   // F key: creates Fire
   if (keyCode==70){
-    
-    if(fires == null){ 
-      fires = new FireParticleSystem();
-      fires.firePoints.add(fireOrigin);
-      burning = true ;
-    }else{
-      burningCount = 30 ;
-      fires = null ;
-      burning = false ;
-    }
+    toggleForestfire();
   }
 }

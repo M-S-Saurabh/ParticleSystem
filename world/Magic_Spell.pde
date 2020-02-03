@@ -1,17 +1,4 @@
-//void draw(){
-//  background(0);
-//  if(mousePressed){
-//    int rdm = (int) random(2);
-//    if( rdm % 2 == 0){
-//      spell = new MagicSpell( new PVector(mouseX, mouseY), water);
-//    }else{
-//      spell = new MagicSpell( new PVector(mouseX, mouseY), fire);
-//    }
-//  }
-//  if(spell != null){
-//    spell.run();
-//  }
-//}
+// spell = new MagicSpell( new PVector(mouseX, mouseY), fire);
 
 class MagicSpell{
   Projectile proj;
@@ -21,16 +8,15 @@ class MagicSpell{
   color splColor;
   float lifespan = 256.0;
   
-  MagicSpell(PVector start_locn, PVector end_locn, color splColor){
+  Projectile getProjectile(){
+    return new WaterSpellProjectile(start_locn, end_locn);
+  }
+  
+  MagicSpell(PVector start_locn, PVector end_locn){
     this.particles = new ArrayList<Particle>();
     this.start_locn = start_locn.copy();
     this.end_locn = end_locn.copy();
-    this.splColor = splColor;
-    if(splColor == water){
-      proj = new WaterSpellProjectile(start_locn, end_locn, splColor);
-    }else{
-      proj = new FireSpellProjectile(start_locn, end_locn, splColor);
-    }
+    proj = getProjectile();
     this.addParticles();
   }
   
@@ -58,5 +44,25 @@ class MagicSpell{
     //    p.restart(tempOrigin);
     //  }
     //}
+  }
+}
+
+class FireSpell extends MagicSpell{
+  FireSpell(PVector start_locn, PVector end_locn){
+    super(start_locn, end_locn);
+  }
+  @Override
+  Projectile getProjectile(){
+    return new FireSpellProjectile(start_locn, end_locn);
+  }
+}
+
+class WaterSpell extends MagicSpell{
+  WaterSpell(PVector start_locn, PVector end_locn){
+    super(start_locn, end_locn);
+  }
+  @Override
+  Projectile getProjectile(){
+    return new WaterSpellProjectile(start_locn, end_locn);
   }
 }

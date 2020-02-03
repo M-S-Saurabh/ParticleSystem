@@ -8,10 +8,10 @@ class Projectile{
   float death;
   float alpha;
   float size = 1;
+  boolean explode = false;
   
-  Projectile(PVector start_locn, PVector end_locn, color splColor){
+  Projectile(PVector start_locn, PVector end_locn){
     restart(start_locn, end_locn);
-    this.splColor = splColor;
   }
   void run(){
     update();
@@ -27,7 +27,10 @@ class Projectile{
     fill(splColor);
     ellipse(location.x,location.y,size*0.8,size);
   }
-  
+  void collision(){
+    explode = true;
+    this.lifespan = 0.0;
+  }
   PVector perturb_along(PVector start, PVector end){
     float len = PVector.sub(end,start).mag();
     PVector end_new = end.copy();
@@ -43,11 +46,12 @@ class Projectile{
   
   void restart(PVector start_locn, PVector end_locn){
     direction = PVector.sub(end_locn, start_locn).normalize();
-    
-    acceleration = PVector.mult(direction, 0.1);// 0.1 in the direction and some perturbation new PVector(0.1,random(-0.05,0.05), random(-0.05, 0.05));
-    velocity = PVector.mult(direction, 3.5); // velocity of 4 in the direction
+    // 0.1 in the direction and some perturbation new PVector(0.1,random(-0.05,0.05), random(-0.05, 0.05));
+    acceleration = PVector.mult(direction, 0.1);
+    // velocity of 4 in the direction
+    velocity = PVector.mult(direction, 0.5); 
     location = start_locn.copy();
-    lifespan = 50;
+    lifespan = 100;
     alpha = random(100,150);
     splColor = color(red(splColor),green(splColor),blue(splColor),alpha);
     death = random(-10,10);
@@ -78,8 +82,10 @@ void drawStar(float x, float y, float z, float size){
 }
 
 class WaterSpellProjectile extends Projectile{
-  WaterSpellProjectile(PVector start_locn, PVector end_locn, color splColor){
-    super(start_locn, end_locn, splColor);
+  color splColor = color(12,160,240);
+  
+  WaterSpellProjectile(PVector start_locn, PVector end_locn){
+    super(start_locn, end_locn);
   }
   
   @Override
@@ -92,8 +98,10 @@ class WaterSpellProjectile extends Projectile{
 }
 
 class FireSpellProjectile extends Projectile{
-  FireSpellProjectile(PVector start_locn, PVector end_locn, color splColor){
-    super(start_locn, end_locn, splColor);
+  color splColor = color(236,85,17);
+  
+  FireSpellProjectile(PVector start_locn, PVector end_locn){
+    super(start_locn, end_locn);
   }
   
   @Override
