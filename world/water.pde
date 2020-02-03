@@ -35,10 +35,12 @@ class Waterfall {
     rotateX(PI/2);
     fill(splColor);
     stroke(splColor,100);
+    // Grow the mouth of river (ellipse part)
     if(life < 200.0){
       float temp_r = (life<100.0)? river_r : river_r * (1 - (life-100.0)/100.0);
       ellipse(40, 0, temp_r, 0.7*temp_r);
     }
+    // Grow length of the river
     if(life < 100){
       rectMode(CENTER);
       float temp_w = (life<0.0)? river_w : river_w * (1 - (life-0.0)/100.0);

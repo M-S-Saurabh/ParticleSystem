@@ -21,7 +21,7 @@ boolean burning = false ;
 int burningCount = 30 ;
 float fireRadius = 10 ;
 
-boolean debug_collisions = true;
+boolean debug_collisions = false;
 ArrayList<collisionSphere> collisionList = null;
 
 void setup(){
@@ -79,6 +79,7 @@ void runParticles(){
     fires.run();
     fireRadius += 10.0 ;
   }
+  if(waterfall != null && waterfall.life < 40.0){ stopFire();}
   
   if(collisionList.get(0).checkCollision()){toggleWaterfall();}
   if(collisionList.get(1).checkCollision()){toggleForestfire();}
@@ -265,6 +266,12 @@ void toggleWaterfall(){
   }
 }
 
+void stopFire(){
+  burningCount = 30 ;
+  fires = null ;
+  burning = false ;
+}
+
 void toggleForestfire(){
   if(fires == null){ 
     fires = new FireParticleSystem();
@@ -295,7 +302,7 @@ void keyPressed() {
     collisionList.get(0).addDetector(ms.proj);
   }
   // Pressing N key: shoots fire spell
-  if(keyCode == 77){
+  if(keyCode == 78){
     if(ms != null){collisionList.get(1).resetDetector();}
     ms = new FireSpell(new PVector(100,75,150), new PVector(190,80,0));
     collisionList.get(1).addDetector(ms.proj);
