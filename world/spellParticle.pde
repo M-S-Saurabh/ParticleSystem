@@ -9,12 +9,12 @@ class SpellParticle {
   float size;
   int type ;
   
-  SpellParticle(PVector l, color c, PVector v, PVector a, int t){
+  SpellParticle(PVector l, color c, PVector v, PVector a, int t, float life){
     this.location = l ;
     this.velocity = v ;
     this.acceleration = a ; 
     this.splColor = c ;
-    this.lifespan = 50 ;
+    this.lifespan = life ;
     this.size = 1 ;
     this.type = t ;
   }

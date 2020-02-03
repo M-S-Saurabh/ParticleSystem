@@ -94,7 +94,7 @@ class WaterSpellProjectile extends Projectile{
     stroke(tempColor);
     fill(tempColor);
     drawStar(location.x, location.y, location.z, size);
-    location.x  += random(-5, 5) ;
+    location.x  += random(-3, 3) ;
   }
 }
 
@@ -111,6 +111,6 @@ class FireSpellProjectile extends Projectile{
     stroke(tempColor);
     fill(tempColor);
     drawStar(location.x, location.y, location.z, size);
-    location.z += random(-10, 10) ;
+    location.z += random(-2, 2) ;
   }
 }

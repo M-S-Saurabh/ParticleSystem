@@ -21,7 +21,7 @@ class MagicSpell{
   }
   
   void addParticles(){
-    for(int i=0; i<50;i++){
+    for(int i=0; i<100;i++){
       PVector tempOrigin = new PVector(proj.location.x + random(-2, 2), proj.location.y+random(-2,+2), proj.location.z + random(-2, 2) );
       PVector tempVelocity = proj.velocity.copy() ;
       tempVelocity = tempVelocity.div(10) ;
@@ -29,10 +29,10 @@ class MagicSpell{
       PVector tempAccel = proj.acceleration.copy() ;
       tempAccel = tempAccel.div(10) ;
       if(blue(proj.splColor) == 240.0){
-        particles.add( new SpellParticle(tempOrigin, proj.splColor, tempVelocity, tempAccel, 1)) ;
+        particles.add( new SpellParticle(tempOrigin, proj.splColor, tempVelocity, tempAccel, 1, 100 - proj.lifespan)) ;
       }
       else{
-        particles.add( new SpellParticle(tempOrigin, proj.splColor, tempVelocity, tempAccel, 2)) ;
+        particles.add( new SpellParticle(tempOrigin, proj.splColor, tempVelocity, tempAccel, 2, 100 - proj.lifespan)) ;
       }
     }
   }
@@ -52,14 +52,16 @@ class MagicSpell{
   void explode(){
     particles.clear() ;
     for (int i = 0; i < 1000; i++){
+      float radius = 50*sqrt(random(-1, 1)) ;
+      float theta = 2*PI*sqrt(random(0, 1));
       PVector tempOrigin = new PVector(proj.location.x, proj.location.y, proj.location.z);
-      PVector tempVelocity = new PVector(random(-50, 50), random(0, 40), random(-50, 50)) ;
-      PVector tempAccel = new PVector(random(0, 50), random(50, 100), random(-50, 50)) ;
+      PVector tempVelocity = new PVector(radius*cos(theta), random(40, 80), radius*sin(theta)) ;
+      PVector tempAccel = new PVector(0, -10, 0) ;
       if(blue(proj.splColor) == 240.0){
-        particles.add( new SpellParticle(tempOrigin, proj.splColor, tempVelocity, tempAccel, 1)) ;
+        particles.add( new SpellParticle(tempOrigin, proj.splColor, tempVelocity, tempAccel, 1, 20)) ;
       }
       else{
-        particles.add( new SpellParticle(tempOrigin, proj.splColor, tempVelocity, tempAccel, 2)) ;
+        particles.add( new SpellParticle(tempOrigin, proj.splColor, tempVelocity, tempAccel, 2, 20)) ;
       }
       
     }
