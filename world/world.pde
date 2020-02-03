@@ -1,11 +1,15 @@
 import peasy.*;
 
 PeasyCam cam;
-PShape sh;
+PShape sh, icemage;
 float scaleFactor = 1;
 
-ParticleSystem waterfall;
+Waterfall waterfall;
 ArrayList<PVector> waterPoints;
+
+MagicSpell ms;
+color water = color(12,160,240);
+color fire = color(236,85,17);
 
 void setup(){
   size(1000,1000,P3D);
@@ -15,10 +19,11 @@ void setup(){
   cam.setYawRotationMode();
   
   if(waterPoints == null){waterPoints = new ArrayList<PVector>();}
-  waterPoints.add(new PVector(0,-65,0));
+  waterPoints.add(new PVector(2,45,0));
   
   noStroke();
   sh = loadShape("OBJ/Terrain.obj");
+  icemage = loadShape("iceMage.obj");
 }
 
 void translateCamera(){
@@ -39,11 +44,13 @@ void translateCamera(){
 
 void runParticles(){
   if(waterfall != null){waterfall.run();}
+  if(ms != null){ms.run();}
 }
 
 void draw(){
   background(0);
   lights();
+  stroke(255);
   fill(255);
   if(keyPressed && key == CODED){
     translateCamera();
@@ -52,16 +59,33 @@ void draw(){
   pushMatrix();
   rotateX(PI);
   rotateY(PI/2);
+  translate(0,-100,0);
   scale(20.0);
-  translate(0,-5,0);
   shape(sh);
   popMatrix();
   
-  // Draw a plane
-  translate(0,110,0);
-  box(400,10,400);
+  // Draw ice mage.
+  pushMatrix();
+  rotateX(PI);
+  translate(100,-100,-150);
+  scale(0.2);
+  shape(icemage);
+  popMatrix();
   
+  // Draw a plane
+  pushMatrix();
+  stroke(255);
+  fill(255);
+  translate(0,101,0);
+  box(400,2,400);
+  popMatrix();
+  
+  int start = millis();
   runParticles();
+  int end = millis();
+  if(end - start > 0){
+    print("FPS:"+str(1000/(end-start))+"\n");
+  }
 }
 
 void keyPressed() {
@@ -74,11 +98,17 @@ void keyPressed() {
   if(keyCode == 67){
     cam.setFreeRotationMode();
   }
-  // W key: toggles water flow
+  
+  // Pressing M key: shoots magic spell
+  if(keyCode == 77){
+    ms = new MagicSpell(new PVector(100,75,150), new PVector(2,45,0), water);
+  }
+  
+  // Pressing W key: toggles water flow
   if(keyCode == 87){
     if(waterfall == null){
       for(PVector point: waterPoints){
-        waterfall = new ParticleSystem(point);
+        waterfall = new Waterfall(point);
       }
     }else{
       waterfall = null;
