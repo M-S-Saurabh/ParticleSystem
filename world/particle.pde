@@ -37,6 +37,7 @@ class Particle{
     pushMatrix() ;
     translate(location.x, location.y, location.z);
     ellipse(0,0,size,size);
+    //point(0, 0, 0);
     //box(size);
     popMatrix() ;
   }

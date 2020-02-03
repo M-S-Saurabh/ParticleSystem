@@ -15,9 +15,10 @@ MagicSpell ms;
 color water = color(12,160,240);
 color fire = color(236,85,17);
 
+
 // FireParticles System
 FireParticleSystem fires = null;
-PVector fireOrigin = new PVector(100, -10, -60) ;
+PVector fireOrigin = new PVector(190, 100, 0) ;
 boolean burning = false ;
 int burningCount = 30 ;
 float fireRadius = 10 ;
@@ -42,6 +43,7 @@ void setup(){
   Dw = loadShape("OBJ/Willow_Dead_3.obj");
   Db = loadShape("OBJ/BirchTree_Dead_1.obj");
   Dp = loadShape("OBJ/CommonTree_Dead_2.obj");
+
 }
 
 void translateCamera(){
@@ -80,8 +82,6 @@ void draw(){
   rotateY(PI/2);
   translate(0,-100,0);
   scale(20.0);
-  //translate(-100, 10, 70);
-  //scale(25.0);
   shape(sh);
   popMatrix() ;
   
@@ -98,7 +98,7 @@ void draw(){
   stroke(150, 75, 0);
   fill(150, 75, 0) ;
   translate(0,101,0);
-  box(400,2,400);
+  box(600,2,600);
   popMatrix();
   
   int start = millis();
@@ -107,138 +107,17 @@ void draw(){
   if(end - start > 0){
     print("FPS:"+str(1000/(end-start))+"\n");
   }
+  
   if (burning){
     burningCount-= 1 ;
   }
   
   if (burningCount > 0){
-    pushMatrix();
-    rotateX(PI);
-    translate(80, 10, 70);
-    scale(10.0);
-    shape(B);
-    popMatrix() ;
-    
-    pushMatrix();
-    rotateX(PI);
-    translate(110, 10, 60);
-    scale(10.0);
-    shape(B);
-    popMatrix() ;
-    
-    pushMatrix();
-    rotateX(PI);
-    translate(120, 10, 50);
-    scale(10.0);
-    shape(B);
-    popMatrix() ;
-    
-    pushMatrix();
-    rotateX(PI);
-    translate(100,10, 70);
-    scale(10.0);
-    shape(P);
-    popMatrix() ;
-    
-    pushMatrix();
-    rotateX(PI);
-    translate(90,10, 60);
-    scale(10.0);
-    shape(P);
-    popMatrix() ;
-    
-    pushMatrix();
-    rotateX(PI);
-    translate(70,10, 50);
-    scale(10.0);
-    shape(P);
-    popMatrix() ;
-    
-    pushMatrix();
-    rotateX(PI);
-    translate(120,10, 70);
-    scale(10.0);
-    shape(W);
-    popMatrix() ;
-    
-    pushMatrix();
-    rotateX(PI);
-    translate(80,10, 60);
-    scale(10.0);
-    shape(W);
-    popMatrix() ;
-    
-    pushMatrix();
-    rotateX(PI);
-    translate(100,10, 50);
-    scale(10.0);
-    shape(W);
-    popMatrix() ;
+    greenScene();
   }
   
   if (burningCount <= 0){
-    pushMatrix();
-    rotateX(PI);
-    translate(80, 10, 70);
-    scale(10.0);
-    shape(Db);
-    popMatrix() ;
-    
-    pushMatrix();
-    rotateX(PI);
-    translate(110, 10, 60);
-    scale(10.0);
-    shape(Db);
-    popMatrix() ;
-    
-    pushMatrix();
-    rotateX(PI);
-    translate(120, 10, 50);
-    scale(10.0);
-    shape(Db);
-    popMatrix() ;
-    
-    pushMatrix();
-    rotateX(PI);
-    translate(100,10, 70);
-    scale(10.0);
-    shape(Dp);
-    popMatrix() ;
-    
-    pushMatrix();
-    rotateX(PI);
-    translate(90,10, 60);
-    scale(10.0);
-    shape(Dp);
-    popMatrix() ;
-    
-    pushMatrix();
-    rotateX(PI);
-    translate(70,10, 50);
-    scale(10.0);
-    shape(Dp);
-    popMatrix() ;
-    
-    pushMatrix();
-    rotateX(PI);
-    translate(120,10, 70);
-    scale(10.0);
-    shape(Dw);
-    popMatrix() ;
-    
-    pushMatrix();
-    rotateX(PI);
-    translate(80,10, 60);
-    scale(10.0);
-    shape(Dw);
-    popMatrix() ;
-    
-    pushMatrix();
-    rotateX(PI);
-    translate(100,10, 50);
-    scale(10.0);
-    shape(Dw);
-    popMatrix() ;
+    burntScene();
   }
   
   if(fires != null){
@@ -246,8 +125,129 @@ void draw(){
     fireRadius += 10.0 ;
   }
   
-  surface.setTitle("World FPS: "+ str(round(frameRate)) +"\n");
+  surface.setTitle("World FPS: "+ str(round(frameRate)) +"\n") ;
 }
+
+void greenScene(){
+  
+  pushMatrix();
+  rotateX(PI);
+  translate(170, -100, 10);
+  scale(10.0);
+  shape(B);
+  popMatrix() ;
+  
+  pushMatrix();
+  rotateX(PI);
+  translate(200, -100, 0);
+  scale(10.0);
+  shape(B);
+  popMatrix() ;
+  
+  pushMatrix();
+  rotateX(PI);
+  translate(210, -100, -10);
+  scale(10.0);
+  shape(B);
+  popMatrix() ;
+  
+  pushMatrix();
+  rotateX(PI);
+  translate(190, -100, 10);
+  scale(10.0);
+  shape(P);
+  popMatrix() ;
+  
+  pushMatrix();
+  rotateX(PI);
+  translate(180, -100, 0);
+  scale(10.0);
+  shape(P);
+  popMatrix() ;
+      
+  pushMatrix();
+  rotateX(PI);
+  translate(210, -100, 10);
+  scale(10.0);
+  shape(W);
+  popMatrix() ;
+  
+  pushMatrix();
+  rotateX(PI);
+  translate(170,-100, 0);
+  scale(10.0);
+  shape(W);
+  popMatrix() ;
+  
+  pushMatrix();
+  rotateX(PI);
+  translate(190,-100, -10);
+  scale(10.0);
+  shape(W);
+  popMatrix() ;
+  
+}
+
+void burntScene(){
+  pushMatrix();
+  rotateX(PI);
+  translate(170, -100, 10);
+  scale(10.0);
+  shape(Db);
+  popMatrix() ;
+  
+  pushMatrix();
+  rotateX(PI);
+  translate(200, -100, 0);
+  scale(10.0);
+  shape(Db);
+  popMatrix() ;
+  
+  pushMatrix();
+  rotateX(PI);
+  translate(210, -100, -10);
+  scale(10.0);
+  shape(Db);
+  popMatrix() ;
+  
+  pushMatrix();
+  rotateX(PI);
+  translate(190,-100, 10);
+  scale(10.0);
+  shape(Dp);
+  popMatrix() ;
+  
+  pushMatrix();
+  rotateX(PI);
+  translate(180,-100, 0);
+  scale(10.0);
+  shape(Dp);
+  popMatrix() ;
+  
+  pushMatrix();
+  rotateX(PI);
+  translate(210,-100, 10);
+  scale(10.0);
+  shape(Dw);
+  popMatrix() ;
+  
+  pushMatrix();
+  rotateX(PI);
+  translate(180,-100, 0);
+  scale(10.0);
+  shape(Dw);
+  popMatrix() ;
+  
+  pushMatrix();
+  rotateX(PI);
+  translate(190,-100, -10);
+  scale(10.0);
+  shape(Dw);
+  popMatrix() ;
+  
+  
+}
+
 
 void keyPressed() {
   print("keyCode is:"+keyCode+"\n");
