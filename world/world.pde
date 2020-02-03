@@ -1,28 +1,27 @@
 import peasy.*;
 
 PeasyCam cam;
-<<<<<<< HEAD
+
 PShape sh, icemage;
-=======
-PShape sh, W, B, P, Db, Dp, Dw ;
->>>>>>> 89c37194ce4237642f77924dd88722b3fac629f9
+PShape W, B, P, Db, Dp, Dw ;
 float scaleFactor = 1;
 
+// Waterfall system
 Waterfall waterfall;
 ArrayList<PVector> waterPoints;
-<<<<<<< HEAD
 
+// MagiSpell system
 MagicSpell ms;
 color water = color(12,160,240);
 color fire = color(236,85,17);
 
-=======
+// FireParticles System
 FireParticleSystem fires = null;
 PVector fireOrigin = new PVector(100, -10, -60) ;
 boolean burning = false ;
 int burningCount = 30 ;
 float fireRadius = 10 ;
->>>>>>> 89c37194ce4237642f77924dd88722b3fac629f9
+
 void setup(){
   
   size(1000,1000,P3D);
@@ -32,25 +31,17 @@ void setup(){
   cam.setYawRotationMode();
   
   if(waterPoints == null){waterPoints = new ArrayList<PVector>();}
-<<<<<<< HEAD
   waterPoints.add(new PVector(2,45,0));
   
   noStroke();
   sh = loadShape("OBJ/Terrain.obj");
   icemage = loadShape("iceMage.obj");
-=======
-  waterPoints.add(new PVector(0,-65,50));
-  
-  noStroke();
-  sh = loadShape("OBJ/Terrain.obj");
   W = loadShape("OBJ/Willow_3.obj");
   P = loadShape("OBJ/PalmTree_2.obj");
   B = loadShape("OBJ/BirchTree_1.obj");
   Dw = loadShape("OBJ/Willow_Dead_3.obj");
   Db = loadShape("OBJ/BirchTree_Dead_1.obj");
   Dp = loadShape("OBJ/CommonTree_Dead_2.obj");
-  
->>>>>>> 89c37194ce4237642f77924dd88722b3fac629f9
 }
 
 void translateCamera(){
@@ -83,43 +74,17 @@ void draw(){
   if(keyPressed && key == CODED){
     translateCamera();
   }
-  // Draw a hill.
-  //pushMatrix();
-  //rotateX(PI);
-  //translate(-100,-100,70);
-  ////rotateY(PI/2);
-  //scale(20.0);
-  //shape(sh);
-  //popMatrix();
-  
-  // Draw a plane
-  //translate(0,110,0);
-  //box(400,10,400);
   
   pushMatrix();
   rotateX(PI);
-<<<<<<< HEAD
   rotateY(PI/2);
   translate(0,-100,0);
   scale(20.0);
-=======
-  translate(-100, 10, 70);
-  scale(25.0);
->>>>>>> 89c37194ce4237642f77924dd88722b3fac629f9
+  //translate(-100, 10, 70);
+  //scale(25.0);
   shape(sh);
   popMatrix() ;
-    
   
-  pushMatrix();
-  scale(10.0) ;
-  //translate(0,-1,0);
-  fill(150, 75, 0) ;
-  box(40,2,40);
-  popMatrix();
-    
-  runParticles();
-  
-<<<<<<< HEAD
   // Draw ice mage.
   pushMatrix();
   rotateX(PI);
@@ -130,8 +95,8 @@ void draw(){
   
   // Draw a plane
   pushMatrix();
-  stroke(255);
-  fill(255);
+  stroke(150, 75, 0);
+  fill(150, 75, 0) ;
   translate(0,101,0);
   box(400,2,400);
   popMatrix();
@@ -142,7 +107,6 @@ void draw(){
   if(end - start > 0){
     print("FPS:"+str(1000/(end-start))+"\n");
   }
-=======
   if (burning){
     burningCount-= 1 ;
   }
@@ -282,8 +246,7 @@ void draw(){
     fireRadius += 10.0 ;
   }
   
-  surface.setTitle("World FPS: "+ str(round(frameRate)) +"\n") ;
->>>>>>> 89c37194ce4237642f77924dd88722b3fac629f9
+  surface.setTitle("World FPS: "+ str(round(frameRate)) +"\n");
 }
 
 void keyPressed() {
