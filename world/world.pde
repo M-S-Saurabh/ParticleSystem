@@ -81,8 +81,32 @@ void runParticles(){
   }
   if(waterfall != null && waterfall.life < 40.0){ stopFire();}
   
-  if(collisionList.get(0).checkCollision()){toggleWaterfall();}
-  if(collisionList.get(1).checkCollision()){toggleForestfire();}
+  if(collisionList.get(0).checkCollision()){
+    ms.explode() ;
+    ms.explode() ;
+    ms.explode() ;
+    ms.explode() ;
+    ms.explode() ;
+    ms.explode() ;
+    ms.explode() ;
+    ms.explode() ;
+    ms.explode() ;
+    ms.explode() ;
+    toggleWaterfall();
+  }
+  if(collisionList.get(1).checkCollision()){
+    ms.explode() ;
+    ms.explode() ;
+    ms.explode() ;
+    ms.explode() ;
+    ms.explode() ;
+    ms.explode() ;
+    ms.explode() ;
+    ms.explode() ;
+    ms.explode() ;
+    ms.explode() ;
+    toggleForestfire();
+  }
 }
 
 void draw(){
@@ -285,7 +309,7 @@ void toggleForestfire(){
 }
 
 void keyPressed() {
-  print("keyCode is:"+keyCode+"\n");
+  //print("keyCode is:"+keyCode+"\n");
   // reset camera constraints
   if (keyCode == 48) {
     cam.setYawRotationMode();

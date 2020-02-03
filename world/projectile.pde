@@ -82,10 +82,10 @@ void drawStar(float x, float y, float z, float size){
 }
 
 class WaterSpellProjectile extends Projectile{
-  color splColor = color(12,160,240);
   
   WaterSpellProjectile(PVector start_locn, PVector end_locn){
     super(start_locn, end_locn);
+    this.splColor = color(12,160,240);
   }
   
   @Override
@@ -94,14 +94,15 @@ class WaterSpellProjectile extends Projectile{
     stroke(tempColor);
     fill(tempColor);
     drawStar(location.x, location.y, location.z, size);
+    location.x  += random(-5, 5) ;
   }
 }
 
 class FireSpellProjectile extends Projectile{
-  color splColor = color(236,85,17);
   
   FireSpellProjectile(PVector start_locn, PVector end_locn){
     super(start_locn, end_locn);
+    this.splColor = color(236,85,17);
   }
   
   @Override
@@ -110,5 +111,6 @@ class FireSpellProjectile extends Projectile{
     stroke(tempColor);
     fill(tempColor);
     drawStar(location.x, location.y, location.z, size);
+    location.z += random(-10, 10) ;
   }
 }

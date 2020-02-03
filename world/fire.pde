@@ -81,7 +81,7 @@ class FireParticleSystem{
       return;
     }
     // increase the number of particles creates more realistic effect
-    for(int i=0; i<100 ; i++){
+    for(int i=0; i<300 ; i++){
       this.addParticle();
     }
     for(int i=particles.size()-1; i>=0; i--){

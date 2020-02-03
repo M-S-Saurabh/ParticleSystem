@@ -34,12 +34,12 @@ class Particle{
     tint(255, 126);
     stroke(splColor);
     fill(splColor);
-    pushMatrix() ;
-    translate(location.x, location.y, location.z);
-    ellipse(0,0,size,size);
-    //point(0, 0, 0);
+    //pushMatrix() ;
+    //translate(location.x, location.y, location.z);
+    //ellipse(0,0,size,size);
+    point(location.x, location.y, location.z);
     //box(size);
-    popMatrix() ;
+    //popMatrix() ;
   }
   void restart(PVector l){
     acceleration = new PVector(0.0, 0.0, 0.0);
