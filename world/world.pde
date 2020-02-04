@@ -96,7 +96,7 @@ void runParticles(){
     fires.run();
     fireRadius += 10.0 ;
   }
-  if(waterfall != null && waterfall.life < 40.0){ stopFire();}
+  if(waterfall != null && waterfall.life < 40.0){ }//stopFire();}
   
   if(collisionList.get(0).checkCollision()){
     toggleWaterfall();
@@ -138,7 +138,7 @@ void drawWorld(){
   shape(hills.get(0));
   translate(-6,0,0);
   shape(hills.get(0));
-  translate(3,0,-4);
+  translate(3,0.01,-4);
   shape(hills.get(1));
   translate(-4,0,0);
   shape(hills.get(2));

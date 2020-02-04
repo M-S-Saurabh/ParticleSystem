@@ -80,7 +80,7 @@ class WaterParticle {
     velocity = new Ray(random(1.5,2), 0.0, random(-0.5, 0.5));
     position = l.copy();
     origin = l.copy();
-    life = 100.0;
+    life = 200.0;
     alpha = 255.0;
     river = false;
   }
@@ -122,11 +122,7 @@ class WaterParticle {
       fill(255.0, alpha);
     }
     //point(position.x, position.y, position.z);
-    float s = 2.0;
+    float s = 1.5;
     line(position.x, position.y, position.z, position.x+random(-s,s),position.y+random(-s,s), position.z+random(-s,s));
-    //pushMatrix();
-    //translate(position.x, position.y, position.z);
-    //box(0.5 );
-    //popMatrix();
   }
 }
