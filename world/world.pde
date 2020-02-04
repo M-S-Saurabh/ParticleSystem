@@ -8,7 +8,7 @@ float scaleFactor = 1;
 
 // Waterfall system
 Waterfall waterfall;
-ArrayList<PVector> waterPoints;
+ArrayList<Ray> waterPoints;
 
 // MagiSpell system
 MagicSpell ms;
@@ -16,7 +16,7 @@ MagicSpell ms;
 
 // FireParticles System
 FireParticleSystem fires = null;
-PVector fireOrigin = new PVector(190, 100, 0) ;
+Ray fireOrigin = new Ray(190, 100, 0) ;
 boolean burning = false ;
 int burningCount = 30 ;
 float fireRadius = 10 ;
@@ -33,8 +33,8 @@ void setup(){
   cam.setMaximumDistance(800);
   cam.setYawRotationMode();
   
-  waterPoints = new ArrayList<PVector>();
-  waterPoints.add(new PVector(2,45,0));
+  waterPoints = new ArrayList<Ray>();
+  waterPoints.add(new Ray(2,45,0));
   
   collisionList = new ArrayList<collisionSphere>();
   collisionList.add(new collisionSphere(0,42,0,8)); // Mountain top
@@ -54,18 +54,29 @@ void setup(){
 }
 
 void translateCamera(){
-  float[] camPosition = cam.getLookAt();
-  if(keyCode == UP){   
-    cam.lookAt(camPosition[0], camPosition[1]+50, camPosition[2]);
+  if(keyCode == UP){
+    PeasyDragHandler zoomer =  cam.getZoomDragHandler();
+    zoomer.handleDrag(-0.5, -0.5) ;
   }
   if(keyCode == DOWN){
-    cam.lookAt(camPosition[0], camPosition[1]-50, camPosition[2]);
+    PeasyDragHandler zoomer =  cam.getZoomDragHandler();
+    zoomer.handleDrag(0.5, 0.5) ;
   }
   if(keyCode == LEFT){
-    cam.lookAt(camPosition[0]-50, camPosition[1], camPosition[2]);
+    PeasyDragHandler pan =  cam.getPanDragHandler();
+    pan.handleDrag(1.0, 0.0) ;
   }
   if(keyCode == RIGHT){
-    cam.lookAt(camPosition[0]+50, camPosition[1], camPosition[2]);
+    PeasyDragHandler pan =  cam.getPanDragHandler();
+    pan.handleDrag(-1.0, 0.0) ;
+  }
+  if(keyCode == 16){
+    PeasyDragHandler pan =  cam.getPanDragHandler();
+    pan.handleDrag(0.0, 10.0) ;
+  }
+  if(keyCode == 11){
+    PeasyDragHandler pan =  cam.getPanDragHandler();
+    pan.handleDrag(0.0, -10.0) ;
   }
 }
 
@@ -282,7 +293,7 @@ void burntScene(){
 
 void toggleWaterfall(){
   if(waterfall == null){
-    for(PVector point: waterPoints){
+    for(Ray point: waterPoints){
       waterfall = new Waterfall(point);
     }
   }else{
@@ -309,7 +320,7 @@ void toggleForestfire(){
 }
 
 void keyPressed() {
-  //print("keyCode is:"+keyCode+"\n");
+  print("keyCode is:"+keyCode+"\n");
   // reset camera constraints
   if (keyCode == 48) {
     cam.setYawRotationMode();
@@ -322,13 +333,13 @@ void keyPressed() {
   // Pressing M key: shoots water spell
   if(keyCode == 77){
     if(ms != null){collisionList.get(0).resetDetector();}
-    ms = new WaterSpell(new PVector(100,75,150), new PVector(2,45,0));
+    ms = new WaterSpell(new Ray(100,75,150), new Ray(2,45,0));
     collisionList.get(0).addDetector(ms.proj);
   }
   // Pressing N key: shoots fire spell
   if(keyCode == 78){
     if(ms != null){collisionList.get(1).resetDetector();}
-    ms = new FireSpell(new PVector(100,75,150), new PVector(190,80,0));
+    ms = new FireSpell(new Ray(100,75,150), new Ray(190,80,0));
     collisionList.get(1).addDetector(ms.proj);
   }
   
@@ -339,5 +350,9 @@ void keyPressed() {
   // F key: creates Fire
   if (keyCode==70){
     toggleForestfire();
+  }
+  
+  if (keyCode == 16 || keyCode == 11){
+     translateCamera() ; 
   }
 }

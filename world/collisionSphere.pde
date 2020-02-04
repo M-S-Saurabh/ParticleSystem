@@ -2,7 +2,7 @@ class collisionSphere{
   float x;
   float y;
   float z;
-  PVector location;
+  Ray location;
   float size;
   ArrayList<Projectile> detectList;
   
@@ -11,7 +11,7 @@ class collisionSphere{
     this.x = x;
     this.y = y;
     this.z = z;
-    this.location = new PVector(x,y,z);
+    this.location = new Ray(x,y,z);
     this.size = r;
   }
   
@@ -37,7 +37,7 @@ class collisionSphere{
     for(int i = detectList.size()-1; i>=0; i--){
       Projectile obj  = detectList.get(i);
       if(obj.lifespan <= 0.0){ detectList.remove(i); continue;}
-      float distance = PVector.dist(obj.location, this.location);
+      float distance = Ray.dist(obj.location, this.location);
       if(distance < (this.size + obj.size)){
         obj.collision();
         detectList.remove(i);

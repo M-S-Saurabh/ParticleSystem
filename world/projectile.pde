@@ -1,10 +1,9 @@
 class Projectile{
-  PVector location;
-  PVector velocity;
-  PVector acceleration;
-  PVector direction;
-  PVector origin;
-  
+  Ray location;
+  Ray velocity;
+  Ray acceleration;
+  Ray direction;
+  Ray origin;
   color splColor; 
   float lifespan = 100.0;
   float death = 0.0;
@@ -17,7 +16,7 @@ class Projectile{
   boolean sizeInc = false;
   float sizeMax = 3;
   
-  Projectile(PVector start_locn, PVector end_locn){
+  Projectile(Ray start_locn, Ray end_locn){
     restart(start_locn, end_locn);
   }
   void run(){
@@ -38,9 +37,9 @@ class Projectile{
     explode = true;
     this.lifespan = 0.0;
   }
-  PVector perturb_along(PVector start, PVector end){
-    float len = PVector.sub(end,start).mag();
-    PVector end_new = end.copy();
+  Ray perturb_along(Ray start, Ray end){
+    float len = end.sub(start).mag();
+    Ray end_new = end.copy();
     end_new.x += random(0.01*len);
     end_new.y += random(0.01*len);
     end_new.z += random(0.01*len);
@@ -61,14 +60,10 @@ class Projectile{
     popMatrix();
   }
   
-  PVector perturb_away(PVector start, PVector end){
-    return perturb_along(start, end).mult(-1);
-  }
-  
-  void restart(PVector start_locn, PVector end_locn){
-    direction = PVector.sub(end_locn, start_locn).normalize();
-    acceleration = PVector.mult(direction, 0.0);
-    velocity = PVector.mult(direction, 2.0); 
+  void restart(Ray start_locn, Ray end_locn){
+    direction = Ray.sub(end_locn, start_locn).normalize();
+    acceleration = Ray.mult(direction, 0.0);
+    velocity = Ray.mult(direction, 2.0);
     location = start_locn.copy();
     origin = start_locn.copy();
   }
@@ -83,7 +78,7 @@ class Projectile{
 
 class WaterSpellProjectile extends Projectile{
   
-  WaterSpellProjectile(PVector start_locn, PVector end_locn){
+  WaterSpellProjectile(Ray start_locn, Ray end_locn){
     super(start_locn, end_locn);
     this.splColor = color(12,160,240);
   }
@@ -100,7 +95,7 @@ class WaterSpellProjectile extends Projectile{
 
 class FireSpellProjectile extends Projectile{
   
-  FireSpellProjectile(PVector start_locn, PVector end_locn){
+  FireSpellProjectile(Ray start_locn, Ray end_locn){
     super(start_locn, end_locn);
     this.splColor = color(236,85,17);
   }

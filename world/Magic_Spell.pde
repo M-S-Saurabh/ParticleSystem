@@ -1,10 +1,10 @@
-// spell = new MagicSpell( new PVector(mouseX, mouseY), fire);
+// spell = new MagicSpell( new Ray(mouseX, mouseY), fire);
 
 class MagicSpell{
   Projectile proj;
   ArrayList<SpellParticle> particles;
-  PVector start_locn;
-  PVector end_locn;
+  Ray start_locn;
+  Ray end_locn;
   color splColor;
   float lifespan = 256.0;
   
@@ -12,7 +12,7 @@ class MagicSpell{
     return new WaterSpellProjectile(start_locn, end_locn);
   }
   
-  MagicSpell(PVector start_locn, PVector end_locn){
+  MagicSpell(Ray start_locn, Ray end_locn){
     this.particles = new ArrayList<SpellParticle>();
     this.start_locn = start_locn.copy();
     this.end_locn = end_locn.copy();
@@ -37,7 +37,7 @@ class MagicSpell{
       p.run();
     }
   }
-  
+
   SpellParticle getParticle(){
     return new WaterSpellParticle(this.proj);
   }
@@ -47,10 +47,15 @@ class MagicSpell{
   //  for (int i = 0; i < 1000; i++){
   //    float radius = 50*sqrt(random(-1, 1)) ;
   //    float theta = 2*PI*sqrt(random(0, 1));
-  //    PVector tempOrigin = new PVector(proj.location.x, proj.location.y, proj.location.z);
-  //    PVector tempVelocity = new PVector(radius*cos(theta), random(40, 80), radius*sin(theta)) ;
-  //    PVector tempAccel = new PVector(0, -10, 0) ;
-  //    particles.add( this.getParticle(tempOrigin, direction));
+  //    Ray tempOrigin = new Ray(proj.location.x, proj.location.y, proj.location.z);
+  //    Ray tempVelocity = new Ray(radius*cos(theta), random(40, 80), radius*sin(theta)) ;
+  //    Ray tempAccel = new Ray(0, -10, 0) ;
+  //    if(blue(proj.splColor) == 240.0){
+  //      particles.add( new SpellParticle(tempOrigin, proj.splColor, tempVelocity, tempAccel, 1, 20)) ;
+  //    }
+  //    else{
+  //      particles.add( new SpellParticle(tempOrigin, proj.splColor, tempVelocity, tempAccel, 2, 20)) ;
+  //    }
       
   //  }
   //  for(SpellParticle p : particles){
@@ -60,7 +65,7 @@ class MagicSpell{
 }
 
 class FireSpell extends MagicSpell{
-  FireSpell(PVector start_locn, PVector end_locn){
+  FireSpell(Ray start_locn, Ray end_locn){
     super(start_locn, end_locn);
   }
   @Override
@@ -74,7 +79,7 @@ class FireSpell extends MagicSpell{
 }
 
 class WaterSpell extends MagicSpell{
-  WaterSpell(PVector start_locn, PVector end_locn){
+  WaterSpell(Ray start_locn, Ray end_locn){
     super(start_locn, end_locn);
   }
   @Override

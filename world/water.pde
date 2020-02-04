@@ -1,22 +1,21 @@
 class Waterfall {
   ArrayList<WaterParticle> particles;
-  PVector origin;
+  Ray origin;
   float life = 200.0;
   color splColor = color(12,160,240);
   float river_r = 100.0;
   float river_w = 200.0;
   int maxParticles = 5000;
   
-  Waterfall(PVector position) {
+  Waterfall(Ray position) {
     origin = position.copy();
     particles = new ArrayList<WaterParticle>();
     this.addParticle();
   }
 
   void addParticle() {
-    //if(particles.size() < this.maxParticles){
    for(int i=0; i<maxParticles; i++){
-      particles.add(new WaterParticle(new PVector(origin.x,origin.y,origin.z+random(-5,5))));
+      particles.add(new WaterParticle(new Ray(origin.x,origin.y,origin.z+random(-5,5))));
     }
   }
 
@@ -60,22 +59,22 @@ class Waterfall {
 
 // WaterParticle class
 class WaterParticle {
-  PVector position;
-  PVector velocity;
-  PVector acceleration;
-  PVector origin;
+  Ray position;
+  Ray velocity;
+  Ray acceleration;
+  Ray origin;
   color splColor = color(12,160,240,100);
   boolean river;
   float life;
   float alpha;
 
-  WaterParticle(PVector l) {
+  WaterParticle(Ray l) {
     this.respawn(l);
   }
   
-  void respawn(PVector l){
-    acceleration = new PVector(0, random(0.25,0.35), 0);
-    velocity = new PVector(random(1.5,2), 0.0, random(-0.5, 0.5));
+  void respawn(Ray l){
+    acceleration = new Ray(0, random(0.25,0.35), 0);
+    velocity = new Ray(random(1.5,2), 0.0, random(-0.5, 0.5));
     position = l.copy();
     origin = l.copy();
     life = 100.0;
@@ -103,9 +102,9 @@ class WaterParticle {
     }
     if(river ==false && abs(velocity.y) < 0.01){
       river = true;
-      position = new PVector(random(40.0,60.0), random(98.0,100.0), random(-15,15));
-      acceleration = new PVector(0, 0, 0);
-      velocity = new PVector(random(0.25,0.5), 0, random(-0.05, 0.05));
+      position = new Ray(random(40.0,60.0), random(98.0,100.0), random(-15,15));
+      acceleration = new Ray(0, 0, 0);
+      velocity = new Ray(random(0.25,0.5), 0, random(-0.05, 0.05));
     }
   }
 
