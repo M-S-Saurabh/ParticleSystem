@@ -5,21 +5,22 @@ class Waterfall {
   color splColor = color(12,160,240);
   float river_r = 100.0;
   float river_w = 200.0;
-  int maxParticles = 2000;
+  int maxParticles = 5000;
   
   Waterfall(PVector position) {
     origin = position.copy();
     particles = new ArrayList<WaterParticle>();
+    this.addParticle();
   }
 
   void addParticle() {
-    if(particles.size() < this.maxParticles){
+    //if(particles.size() < this.maxParticles){
+   for(int i=0; i<maxParticles; i++){
       particles.add(new WaterParticle(new PVector(origin.x,origin.y,origin.z+random(-5,5))));
     }
   }
 
   void update(){
-    this.addParticle();
     for(WaterParticle p : particles){
       p.run();
       if (p.life < 0.0) {
@@ -118,9 +119,10 @@ class WaterParticle {
       stroke(255.0, alpha);
       fill(255.0, alpha);
     }
-    pushMatrix();
-    translate(position.x, position.y, position.z);
-    box(1);
-    popMatrix();
+    point(position.x, position.y, position.z);
+    //pushMatrix();
+    //translate(position.x, position.y, position.z);
+    //box(0.5 );
+    //popMatrix();
   }
 }

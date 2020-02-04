@@ -82,29 +82,29 @@ void runParticles(){
   if(waterfall != null && waterfall.life < 40.0){ stopFire();}
   
   if(collisionList.get(0).checkCollision()){
-    ms.explode() ;
-    ms.explode() ;
-    ms.explode() ;
-    ms.explode() ;
-    ms.explode() ;
-    ms.explode() ;
-    ms.explode() ;
-    ms.explode() ;
-    ms.explode() ;
-    ms.explode() ;
+    //ms.explode() ;
+    //ms.explode() ;
+    //ms.explode() ;
+    //ms.explode() ;
+    //ms.explode() ;
+    //ms.explode() ;
+    //ms.explode() ;
+    //ms.explode() ;
+    //ms.explode() ;
+    //ms.explode() ;
     toggleWaterfall();
   }
   if(collisionList.get(1).checkCollision()){
-    ms.explode() ;
-    ms.explode() ;
-    ms.explode() ;
-    ms.explode() ;
-    ms.explode() ;
-    ms.explode() ;
-    ms.explode() ;
-    ms.explode() ;
-    ms.explode() ;
-    ms.explode() ;
+    //ms.explode() ;
+    //ms.explode() ;
+    //ms.explode() ;
+    //ms.explode() ;
+    //ms.explode() ;
+    //ms.explode() ;
+    //ms.explode() ;
+    //ms.explode() ;
+    //ms.explode() ;
+    //ms.explode() ;
     toggleForestfire();
   }
 }

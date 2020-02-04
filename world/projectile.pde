@@ -3,12 +3,19 @@ class Projectile{
   PVector velocity;
   PVector acceleration;
   PVector direction;
+  PVector origin;
+  
   color splColor; 
-  float lifespan;
-  float death;
-  float alpha;
-  float size = 1;
+  float lifespan = 100.0;
+  float death = 0.0;
+  float alpha = 200.0;
+  
   boolean explode = false;
+  
+  float size = 2;
+  float sizeMin = 1.5;
+  boolean sizeInc = false;
+  float sizeMax = 3;
   
   Projectile(PVector start_locn, PVector end_locn){
     restart(start_locn, end_locn);
@@ -40,21 +47,30 @@ class Projectile{
     return end_new.sub(start).normalize();
   }
   
+  void drawStar(float x, float y, float z, float size){
+    if(sizeInc){
+      if(size >= sizeMax){sizeInc = false;}
+      size += 0.5;
+    }else{
+      if(size <= sizeMin){sizeInc = false;}
+      size -= 0.5;
+    }
+    pushMatrix();
+    translate(x, y, z);
+    sphere(size);
+    popMatrix();
+  }
+  
   PVector perturb_away(PVector start, PVector end){
     return perturb_along(start, end).mult(-1);
   }
   
   void restart(PVector start_locn, PVector end_locn){
     direction = PVector.sub(end_locn, start_locn).normalize();
-    // 0.1 in the direction and some perturbation new PVector(0.1,random(-0.05,0.05), random(-0.05, 0.05));
-    acceleration = PVector.mult(direction, 0.1);
-    // velocity of 4 in the direction
-    velocity = PVector.mult(direction, 0.5); 
+    acceleration = PVector.mult(direction, 0.0);
+    velocity = PVector.mult(direction, 2.0); 
     location = start_locn.copy();
-    lifespan = 100;
-    alpha = random(100,150);
-    splColor = color(red(splColor),green(splColor),blue(splColor),alpha);
-    death = random(-10,10);
+    origin = start_locn.copy();
   }
   boolean isDead(){
     if(lifespan<death){
@@ -62,22 +78,6 @@ class Projectile{
     }else{
       return false;
     }
-  }
-}
-
-void drawStar(float x, float y, float z, float size){
-  float p = random(-5,5)+size;
-  int rdm = (int) random(3);
-  if( rdm % 3 == 0){
-    pushMatrix();
-    translate(x, y, z);
-    box(p);
-    popMatrix();
-  }else{
-    pushMatrix();
-    translate(x, y, z);
-    sphere(p);
-    popMatrix();
   }
 }
 
@@ -90,11 +90,11 @@ class WaterSpellProjectile extends Projectile{
   
   @Override
   void display(){
-    color tempColor = color(red(splColor),green(splColor)+random(-100,100),blue(splColor));
+    // Change color in nearby shades of blue
+    color tempColor = color(red(splColor),green(splColor)+random(-50,50),blue(splColor), alpha);
     stroke(tempColor);
     fill(tempColor);
     drawStar(location.x, location.y, location.z, size);
-    location.x  += random(-3, 3) ;
   }
 }
 
@@ -107,10 +107,10 @@ class FireSpellProjectile extends Projectile{
   
   @Override
   void display(){
-    color tempColor = color(red(splColor),green(splColor)+random(-100,100),blue(splColor));
+    // Change color in shades of orange
+    color tempColor = color(red(splColor),green(splColor)+random(-50,50),blue(splColor), alpha);
     stroke(tempColor);
     fill(tempColor);
     drawStar(location.x, location.y, location.z, size);
-    location.z += random(-2, 2) ;
   }
 }
