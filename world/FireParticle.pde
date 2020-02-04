@@ -110,3 +110,20 @@ class SmokeParticle extends Particle{
     }
   }
 }
+
+class ExplosionParticle extends Particle {
+  ExplosionParticle(Ray l, Ray v, Ray a, color c){
+    super(l) ;
+    this.splColor = c ;
+    this.velocity = v ;
+    this.acceleration = a ;
+    this.lifespan = 30 ;
+  }
+  
+  @Override
+  void update(){
+    velocity.add(acceleration);
+    location.add(velocity);
+    lifespan -= 1 ;
+  }
+}

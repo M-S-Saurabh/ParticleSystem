@@ -8,6 +8,7 @@ class Projectile{
   float lifespan = 1000.0;
   float death = 0.0;
   float alpha = 200.0;
+  ArrayList<ExplosionParticle> exp ;
   
   boolean explode = false;
   
@@ -22,6 +23,11 @@ class Projectile{
   void run(){
     update();
     display();
+    if (exp != null){
+      for(ExplosionParticle e : exp){
+         e.run() ;
+      }
+    }
   }
   void update(){
     velocity.add(acceleration);
@@ -66,6 +72,7 @@ class Projectile{
     velocity = Ray.mult(direction, 2.0);
     location = start_locn.copy();
     origin = start_locn.copy();
+    exp = null ;
   }
   
   boolean isDead(){
@@ -92,6 +99,23 @@ class WaterSpellProjectile extends Projectile{
     fill(tempColor);
     drawStar(location.x, location.y, location.z, size);
   }
+  
+  @Override
+  void collision(){
+    explode = true;
+    this.lifespan = 20.0;
+    this.velocity = new Ray(0.0, 0.0, 0.0) ;
+    this.acceleration = new Ray(0.0, 0.0, 0.0) ;
+    this.exp = new ArrayList<ExplosionParticle>() ;
+    for(int i = 0 ; i < 10000 ; i++) {
+      float r = 100*sqrt(random(0,1)) ;
+      float th = 2*PI*sqrt(random(0,1)) ;
+      Ray tv = new Ray(r*cos(th), random(-30, -50), r*sin(th)) ;
+      Ray ta = new Ray(0 , 2, 0) ;
+      exp.add(new ExplosionParticle(this.location, tv, ta, this.splColor)) ;
+    }
+  }
+  
 }
 
 class FireSpellProjectile extends Projectile{
@@ -118,5 +142,23 @@ class FireSpellProjectile extends Projectile{
     fill(tempColor);
     drawStar(location.x, location.y, location.z, size);
     pointLight(255,255,255,location.x, location.y, location.z);
+  }
+  
+  @Override
+  void collision(){
+    explode = true;
+    this.lifespan = 20.0;
+    this.velocity = new Ray(0.0, 0.0, 0.0) ;
+    this.acceleration = new Ray(0.0, 0.0, 0.0) ;
+    this.exp = new ArrayList<ExplosionParticle>() ;
+    for(int i = 0 ; i < 10000 ; i++) {
+      float r = 50*sqrt(random(0,1)) ;
+      float th = 2*PI*sqrt(random(0,1)) ;
+      float y = random(-2, 2) ;
+      Ray l = new Ray(this.location.x + r*cos(th), this.location.y + y, this.location.z + r*sin(th)) ;
+      Ray tv = new Ray(r*cos(th), 0, r*sin(th)) ;
+      Ray ta = new Ray(0 , 0, 0) ;
+      exp.add(new ExplosionParticle(l, tv, ta, this.splColor)) ;
+    }
   }
 }
