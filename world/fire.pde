@@ -36,13 +36,13 @@ void endFires(){
 
 class FireParticleSystem{
   ArrayList<Particle> particles;
-  ArrayList<PVector> firePoints;
+  ArrayList<Ray> firePoints;
   boolean smoke = false;
   float lifespan = 100.0;
   
   FireParticleSystem(){
     this.particles = new ArrayList();
-    this.firePoints = new ArrayList<PVector>();
+    this.firePoints = new ArrayList<Ray>();
   }
   
   void putOut(){
@@ -56,19 +56,19 @@ class FireParticleSystem{
   }
   
   void addParticle(){
-    for(PVector origin: this.firePoints){
+    for(Ray origin: this.firePoints){
       if(smoke){
         float radius = 5*sqrt(random(-1, 1)) ;
         float theta = 2*PI*random(0, 1);
         float xPosition = origin.x + radius*cos(theta)*randomGaussian() * 4;
-        PVector tempOrigin = new PVector(xPosition, origin.y, origin.z + radius*sin(theta));
+        Ray tempOrigin = new Ray(xPosition, origin.y, origin.z + radius*sin(theta));
         particles.add(new SmokeParticle(tempOrigin));
       }else{
         // radius of the fire,  radius 30 encircles the trees completely 
         float radius = 20*sqrt(random(-1, 1)) ;
         float theta = 2*PI*random(0, 1);
-        //PVector tempOrigin = new PVector(origin.x+random(-10,+10), origin.y, origin.z);
-        PVector tempOrigin = new PVector(origin.x + radius*cos(theta), origin.y, origin.z + radius*sin(theta));
+        //Ray tempOrigin = new Ray(origin.x+random(-10,+10), origin.y, origin.z);
+        Ray tempOrigin = new Ray(origin.x + radius*cos(theta), origin.y, origin.z + radius*sin(theta));
         particles.add(new FireParticle(tempOrigin));
       }
     }

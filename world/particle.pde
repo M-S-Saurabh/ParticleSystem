@@ -1,15 +1,15 @@
 class Particle{
-  PVector location;
-  PVector origin;
-  PVector velocity;
-  PVector acceleration;
+  Ray location;
+  Ray origin;
+  Ray velocity;
+  Ray acceleration;
   color splColor; 
   float lifespan;
   float death;
   float alpha;
   float size;
   
-  Particle(PVector l){
+  Particle(Ray l){
     restart(l);
   }
   void run(){
@@ -41,9 +41,9 @@ class Particle{
     //box(size);
     //popMatrix() ;
   }
-  void restart(PVector l){
-    acceleration = new PVector(0.0, 0.0, 0.0);
-    velocity = new PVector(random(-0.5,0.5), random(-1.5,-0.5), 0.0);
+  void restart(Ray l){
+    acceleration = new Ray(0.0, 0.0, 0.0);
+    velocity = new Ray(random(-0.5,0.5), random(-1.5,-0.5), 0.0);
     location = l.copy();
     origin = l.copy();
     lifespan = random(50.0,60.0);
@@ -61,15 +61,15 @@ class Particle{
 }
 
 class SmokeParticle extends Particle{
-  SmokeParticle(PVector l){
+  SmokeParticle(Ray l){
     super(l);
     this.splColor = color(random(150.0,255.0));
   }
   
   @Override
-  void restart(PVector l){
-    acceleration = new PVector(random(-0.5, 0.5), random(-0.1,0.0), random(-0.5, 0.5));
-    velocity = new PVector(0.0, random(-0.5,-0.0), 0);
+  void restart(Ray l){
+    acceleration = new Ray(random(-0.5, 0.5), random(-0.1,0.0), random(-0.5, 0.5));
+    velocity = new Ray(0.0, random(-0.5,-0.0), 0);
     location = l.copy();
     origin = l.copy();
     lifespan = 1000.0;
@@ -97,7 +97,7 @@ class SmokeParticle extends Particle{
 }
 
 class FireParticle extends Particle{
-  FireParticle(PVector l){
+  FireParticle(Ray l){
     super(l);
     this.splColor = color(236, 85+random(-100,100), 17, this.alpha);
   }

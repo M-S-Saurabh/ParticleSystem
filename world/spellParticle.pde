@@ -1,15 +1,15 @@
 class SpellParticle {
   
-  PVector location;
-  PVector velocity;
-  PVector acceleration;
+  Ray location;
+  Ray velocity;
+  Ray acceleration;
   color splColor; 
   float lifespan;
   float alpha;
   float size;
   int type ;
   
-  SpellParticle(PVector l, color c, PVector v, PVector a, int t, float life){
+  SpellParticle(Ray l, color c, Ray v, Ray a, int t, float life){
     this.location = l ;
     this.velocity = v ;
     this.acceleration = a ; 
