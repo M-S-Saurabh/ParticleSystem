@@ -10,16 +10,19 @@ class Waterfall {
   Waterfall(Ray position) {
     origin = position.copy();
     particles = new ArrayList<WaterParticle>();
-    this.addParticle();
   }
 
   void addParticle() {
-   for(int i=0; i<maxParticles; i++){
-      particles.add(new WaterParticle(new Ray(origin.x,origin.y,origin.z+random(-5,5))));
+    if(particles.size() < maxParticles){
+      for(int i=0; i<50; i++){
+        particles.add(new WaterParticle(new Ray(origin.x,origin.y,origin.z+random(-5,5))));
+      }
     }
   }
 
   void update(){
+    print("water particles:"+str(particles.size())+"\n");
+    addParticle();
     for(WaterParticle p : particles){
       p.run();
       if (p.life < 0.0) {
@@ -52,7 +55,7 @@ class Waterfall {
   void run() {
     update();
     display();
-    life -= 0.5;
+    life -= 1.0;
   }
 }
 

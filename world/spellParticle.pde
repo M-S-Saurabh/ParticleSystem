@@ -37,7 +37,7 @@ class SpellParticle{
   
   void restart(Projectile projectile){
     float rMin = projectile.size;
-    location = sampleShell(rMin, rMin+5.0).add(projectile.location);
+    location = sampleShell(rMin, rMin+3.0).add(projectile.location);
     
     Ray direction = projectile.velocity.copy().normalize();
     velocity = Ray.mult(direction, -1);
@@ -62,13 +62,13 @@ class SpellParticle{
 class WaterSpellParticle extends SpellParticle{
   WaterSpellParticle(Projectile projectile){
     super(projectile);
-    this.splColor = color(12,160,240,this.alpha);
+    this.splColor = color(12,160+random(-100,100),240,this.alpha);
   }
 }
 
 class FireSpellParticle extends SpellParticle{
   FireSpellParticle(Projectile projectile){
     super(projectile);
-    this.splColor = color(236,85,17,this.alpha);
+    this.splColor = color(236,85+random(-100,100),17,this.alpha);
   }
 }
