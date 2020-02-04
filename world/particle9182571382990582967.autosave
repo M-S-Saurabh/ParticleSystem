@@ -1,15 +1,15 @@
 class Particle{
-  Ray location;
-  Ray origin;
-  Ray velocity;
-  Ray acceleration;
+  PVector location;
+  PVector origin;
+  PVector velocity;
+  PVector acceleration;
   color splColor; 
   float lifespan;
   float death;
   float alpha;
   float size;
   
-  Particle(Ray l){
+  Particle(PVector l){
     restart(l);
   }
   void run(){
@@ -24,29 +24,24 @@ class Particle{
       size *= 0.95;
     }
     lifespan-=1.0;
-    if(lifespan < 20.0){
-      float dir = (velocity.x > 0)? -1.0 : 1.0;
-      velocity.x = dir * random(1.75,2);
-      splColor = color((1-(20-lifespan)/20)* 150);
-    }
+    //if(lifespan < 20.0){
+    //  float dir = (velocity.x > 0)? -1.0 : 1.0;
+    //  velocity.x = dir * random(1.75,2);
+    //  splColor = color((1-(20-lifespan)/20)* 150);
+    //}
   }
   void display(){
     tint(255, 126);
     stroke(splColor);
     fill(splColor);
-    //pushMatrix() ;
-    //translate(location.x, location.y, location.z);
-    //ellipse(0,0,size,size);
     point(location.x, location.y, location.z);
-    //box(size);
-    //popMatrix() ;
   }
-  void restart(Ray l){
-    acceleration = new Ray(0.0, 0.0, 0.0);
-    velocity = new Ray(random(-0.5,0.5), random(-1.5,-0.5), 0.0);
+  void restart(PVector l){
+    acceleration = new PVector(0.0, 0.0, 0.0);
+    velocity = new PVector(random(-0.5,0.5), random(-1.5,-0.5), 0.0);
     location = l.copy();
     origin = l.copy();
-    lifespan = random(50.0,60.0);
+    lifespan = random(5.0,8.0);
     alpha = 255.0;
     death = random(-10,10);
     size = random(0.7,1.2);
@@ -61,15 +56,15 @@ class Particle{
 }
 
 class SmokeParticle extends Particle{
-  SmokeParticle(Ray l){
+  SmokeParticle(PVector l){
     super(l);
     this.splColor = color(random(150.0,255.0));
   }
   
   @Override
-  void restart(Ray l){
-    acceleration = new Ray(random(-0.5, 0.5), random(-0.1,0.0), random(-0.5, 0.5));
-    velocity = new Ray(0.0, random(-0.5,-0.0), 0);
+  void restart(PVector l){
+    acceleration = new PVector(random(-0.5, 0.5), random(-0.1,0.0), random(-0.5, 0.5));
+    velocity = new PVector(0.0, random(-0.5,-0.0), 0);
     location = l.copy();
     origin = l.copy();
     lifespan = 1000.0;
@@ -97,7 +92,7 @@ class SmokeParticle extends Particle{
 }
 
 class FireParticle extends Particle{
-  FireParticle(Ray l){
+  FireParticle(PVector l){
     super(l);
     this.splColor = color(236, 85+random(-100,100), 17, this.alpha);
   }

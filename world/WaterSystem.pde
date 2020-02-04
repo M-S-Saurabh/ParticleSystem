@@ -121,7 +121,9 @@ class WaterParticle {
       stroke(255.0, alpha);
       fill(255.0, alpha);
     }
-    point(position.x, position.y, position.z);
+    //point(position.x, position.y, position.z);
+    float s = 2.0;
+    line(position.x, position.y, position.z, position.x+random(-s,s),position.y+random(-s,s), position.z+random(-s,s));
     //pushMatrix();
     //translate(position.x, position.y, position.z);
     //box(0.5 );

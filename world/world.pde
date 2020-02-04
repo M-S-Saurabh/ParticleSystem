@@ -5,7 +5,7 @@ PeasyCam cam;
 PShape sh, icemage;
 PShape W, B, P, Db, Dp, Dw ;
 float scaleFactor = 1;
-
+PImage grassMossy;
 // Waterfall system
 Waterfall waterfall;
 ArrayList<Ray> waterPoints;
@@ -50,33 +50,34 @@ void setup(){
   Dw = loadShape("OBJ/Willow_Dead_3.obj");
   Db = loadShape("OBJ/BirchTree_Dead_1.obj");
   Dp = loadShape("OBJ/CommonTree_Dead_2.obj");
+  grassMossy = loadImage("textures/grass_mossy.png");
 
 }
 
 void translateCamera(){
   if(keyCode == UP){
     PeasyDragHandler zoomer =  cam.getZoomDragHandler();
-    zoomer.handleDrag(-0.5, -0.5) ;
+    zoomer.handleDrag(-1.0, -1.0) ;
   }
   if(keyCode == DOWN){
     PeasyDragHandler zoomer =  cam.getZoomDragHandler();
-    zoomer.handleDrag(0.5, 0.5) ;
+    zoomer.handleDrag(1.0, 1.0) ;
   }
   if(keyCode == LEFT){
     PeasyDragHandler pan =  cam.getPanDragHandler();
-    pan.handleDrag(1.0, 0.0) ;
+    pan.handleDrag(15.0, 0.0) ;
   }
   if(keyCode == RIGHT){
     PeasyDragHandler pan =  cam.getPanDragHandler();
-    pan.handleDrag(-1.0, 0.0) ;
+    pan.handleDrag(-15.0, 0.0) ;
   }
   if(keyCode == 16){
     PeasyDragHandler pan =  cam.getPanDragHandler();
-    pan.handleDrag(0.0, 10.0) ;
+    pan.handleDrag(0.0, 20.0) ;
   }
   if(keyCode == 11){
     PeasyDragHandler pan =  cam.getPanDragHandler();
-    pan.handleDrag(0.0, -10.0) ;
+    pan.handleDrag(0.0, -20.0) ;
   }
 }
 
@@ -121,7 +122,7 @@ void runParticles(){
 }
 
 void draw(){
-  background(0);
+  background(0.0);
   lights();
   stroke(255);
   fill(255);
@@ -161,9 +162,15 @@ void drawWorld(){
   // Draw a plane
   pushMatrix();
   stroke(150, 75, 0);
-  fill(150, 75, 0) ;
-  translate(0,101,0);
-  box(600,2,600);
+  //fill(150, 75, 0) ;
+  translate(0,100,0);
+  beginShape(QUAD_STRIP);
+  texture(grassMossy);
+  vertex(-200, 0,-250,0,0);
+  vertex(-200, 0,+250,0,512);
+  vertex(300, 0, -250,512,0);
+  vertex(300, 0, 250,512,512);
+  endShape();
   popMatrix();
   
   if (burningCount > 0){

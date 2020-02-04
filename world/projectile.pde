@@ -5,7 +5,7 @@ class Projectile{
   Ray direction;
   Ray origin;
   color splColor; 
-  float lifespan = 100.0;
+  float lifespan = 1000.0;
   float death = 0.0;
   float alpha = 200.0;
   
@@ -67,6 +67,7 @@ class Projectile{
     location = start_locn.copy();
     origin = start_locn.copy();
   }
+  
   boolean isDead(){
     if(lifespan<death){
       return true;
@@ -97,15 +98,25 @@ class FireSpellProjectile extends Projectile{
   
   FireSpellProjectile(Ray start_locn, Ray end_locn){
     super(start_locn, end_locn);
-    this.splColor = color(236,85,17);
+    this.splColor = color(255,232,8);
+  }
+  
+  @Override
+  void restart(Ray start_locn, Ray end_locn){
+    direction = Ray.sub(end_locn, start_locn).normalize();
+    acceleration = Ray.mult(direction, 0.0).add(new Ray(0,0.045,0));
+    velocity = Ray.mult(direction, 2.0).add(new Ray(0,-2,0));
+    location = start_locn.copy();
+    origin = start_locn.copy();
   }
   
   @Override
   void display(){
     // Change color in shades of orange
-    color tempColor = color(red(splColor),green(splColor)+random(-50,50),blue(splColor), alpha);
+    color tempColor = color(red(splColor),green(splColor),blue(splColor), alpha);
     stroke(tempColor);
     fill(tempColor);
     drawStar(location.x, location.y, location.z, size);
+    pointLight(255,255,255,location.x, location.y, location.z);
   }
 }

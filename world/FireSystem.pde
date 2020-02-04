@@ -1,35 +1,3 @@
-//void setup(){
-//  size(1000, 1000, P3D);
-//  lights();
-//  frameRate(60);
-//}
-
-//void keyPressed() {
-//  if (key == CODED) {
-//    if (keyCode == UP) {
-//      fires.ignite();
-//    } else if (keyCode == DOWN) {
-//      fires.putOut();
-//    } 
-//  } else {
-//    // nothing
-//  }
-//}
-//void draw(){
-//  background(0);
-//  if(mousePressed){
-
-//  }
-//  int start = millis();
-//  if(fires != null){
-//    fires.run();
-//  }
-//  int end = millis();
-//  if(end-start > 0){
-//    print("FPS:"+str(1000/(end-start))+"\n");
-//  }
-//}
-
 void endFires(){
   fires = null;
 }
@@ -39,6 +7,7 @@ class FireParticleSystem{
   ArrayList<Ray> firePoints;
   boolean smoke = false;
   float lifespan = 100.0;
+  float maxParticles = 5000;
   
   FireParticleSystem(){
     this.particles = new ArrayList();
@@ -80,15 +49,18 @@ class FireParticleSystem{
       endFires();
       return;
     }
+    print("particles:"+str(particles.size())+"\n");
     // increase the number of particles creates more realistic effect
-    for(int i=0; i<300 ; i++){
-      this.addParticle();
+    if(particles.size() < this.maxParticles){
+      for(int i=0; i<300; i++){
+        this.addParticle();
+      }
     }
     for(int i=particles.size()-1; i>=0; i--){
       Particle p = particles.get(i);
       p.run();
       if(p.isDead()){
-        particles.remove(i);
+        p.restart(p.origin);
       }
     }
   }
