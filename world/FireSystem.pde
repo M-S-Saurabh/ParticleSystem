@@ -7,7 +7,7 @@ class FireParticleSystem{
   ArrayList<Ray> firePoints;
   boolean smoke = false;
   float lifespan = 100.0;
-  float maxParticles = 5000;
+  float maxParticles = 10000;
   
   FireParticleSystem(){
     this.particles = new ArrayList();

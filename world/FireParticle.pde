@@ -31,7 +31,6 @@ class Particle{
     lifespan-=1.0;
   }
   void display(){
-    tint(255, 126);
     stroke(splColor);
     fill(splColor);
     point(location.x, location.y, location.z);
@@ -68,7 +67,6 @@ class FireParticle extends Particle{
   @Override
   void display(){
     color tempColor = flameColors[(int)(lifespan/13.0)];
-    tint(255, 126);
     stroke(tempColor);
     fill(tempColor);
     float s = 1.0;

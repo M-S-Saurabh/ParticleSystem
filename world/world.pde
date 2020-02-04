@@ -2,7 +2,8 @@ import peasy.*;
 
 PeasyCam cam;
 
-PShape sh, icemage;
+PShape sh, icemage, wizard;
+ArrayList<PShape> hills;
 PShape W, B, P, Db, Dp, Dw ;
 float scaleFactor = 1;
 PImage grassMossy;
@@ -42,7 +43,7 @@ void setup(){
   
   noStroke();
   // load objects
-  sh = loadShape("OBJ/Terrain.obj");
+  sh = loadShape("terrain/Terrain.obj");
   icemage = loadShape("iceMage.obj");
   W = loadShape("OBJ/Willow_3.obj");
   P = loadShape("OBJ/PalmTree_2.obj");
@@ -51,7 +52,11 @@ void setup(){
   Db = loadShape("OBJ/BirchTree_Dead_1.obj");
   Dp = loadShape("OBJ/CommonTree_Dead_2.obj");
   grassMossy = loadImage("textures/grass_mossy.png");
-
+  wizard = loadShape("wizard.obj");
+  hills = new ArrayList<PShape>();
+  for(int i=0; i<3; i++){
+    hills.add(loadShape("terrain/Terrain"+str(i+2)+".obj"));
+  }
 }
 
 void translateCamera(){
@@ -149,6 +154,16 @@ void drawWorld(){
   translate(0,-100,0);
   scale(20.0);
   shape(sh);
+  translate(3,0,0);
+  shape(hills.get(0));
+  translate(-6,0,0);
+  shape(hills.get(0));
+  translate(3,0,-4);
+  shape(hills.get(1));
+  translate(-4,0,0);
+  shape(hills.get(2));
+  translate(8,0,0);
+  shape(sh);
   popMatrix() ;
   
   // Draw ice mage.
@@ -159,7 +174,16 @@ void drawWorld(){
   shape(icemage);
   popMatrix();
   
-  // Draw a plane
+  // Draw wizard.
+  pushMatrix();
+  rotateX(PI);
+  translate(100,-80,+180);
+  rotateY(PI);
+  scale(110);
+  shape(wizard);
+  popMatrix();
+  
+  // Draw the ground
   pushMatrix();
   stroke(150, 75, 0);
   //fill(150, 75, 0) ;
@@ -340,7 +364,7 @@ void keyPressed() {
   // Pressing M key: shoots water spell
   if(keyCode == 77){
     if(ms != null){collisionList.get(0).resetDetector();}
-    ms = new WaterSpell(new Ray(100,75,150), new Ray(2,45,0));
+    ms = new WaterSpell(new Ray(100,75,-150), new Ray(2,45,0));
     collisionList.get(0).addDetector(ms.proj);
   }
   // Pressing N key: shoots fire spell

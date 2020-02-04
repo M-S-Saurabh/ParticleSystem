@@ -5,7 +5,7 @@ class Waterfall {
   color splColor = color(12,160,240);
   float river_r = 100.0;
   float river_w = 200.0;
-  int maxParticles = 5000;
+  int maxParticles = 10000;
   
   Waterfall(Ray position) {
     origin = position.copy();
