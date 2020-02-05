@@ -9,6 +9,7 @@ class Particle{
   float death;
   float alpha;
   float size;
+  float rotation;
   
   Particle(Ray l){
     restart(l);
@@ -67,29 +68,22 @@ class FireParticle extends Particle{
     super(l);
     this.splColor = color(236, 85+random(-100,100), 17, this.alpha);
     this.texture = fireTexture;
+    this.rotation = random(0,PI);
   }
   
   void drawQuad(float x, float y, float z, float size){
-    float x_opp = x + size;//random(0, size);
+    float x_opp = x + size*cos(this.rotation);//random(0, size);
     float y_opp = y + size; //random(0, size);
-    float z_opp = z + size; //random(0, size);
+    float z_opp = z + size*sin(this.rotation); //random(0, size);
     int imgHeight = texture.height;
     int imgWidth = texture.width;
-    pushMatrix();
     beginShape(QUAD_STRIP);
     texture(texture);
-    translate(x,y,z);
-    //rotateY(lifespan);
-    vertex(0,0,0,0);
-    vertex(0,size,0,imgHeight);
-    vertex(size,0,imgWidth,0);
-    vertex(size,size,imgWidth,imgHeight);
-    //vertex(x,y,z,0,0);
-    //vertex(x,y_opp,z,0,imgHeight);
-    //vertex(x_opp,y,z,imgWidth,0);
-    //vertex(x_opp,y_opp,z,imgWidth,imgHeight);
+    vertex(x,y,z,0,0);
+    vertex(x,y_opp,z,0,imgHeight);
+    vertex(x_opp,y,z_opp,imgWidth,0);
+    vertex(x_opp,y_opp,z_opp,imgWidth,imgHeight);
     endShape();
-    popMatrix();
   }
   
   @Override
@@ -98,6 +92,7 @@ class FireParticle extends Particle{
     //stroke(tempColor);
     noStroke();
     tint(tempColor);
+    fill(tempColor);
     //float s = 1.0;
     //line(location.x, location.y, location.z,
     //     location.x+random(-s,s),location.y+random(-s,s), location.z+random(-s,s));

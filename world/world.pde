@@ -19,7 +19,7 @@ MagicSpell ms;
 FireParticleSystem fires = null;
 Ray fireOrigin = new Ray(190, 100, 0) ;
 boolean burning = false ;
-int burningCount = 30 ;
+int burningCount = 3000 ;
 float fireRadius = 10 ;
 PImage fireTexture;
 
@@ -98,7 +98,7 @@ void runParticles(){
     fires.run();
     fireRadius += 10.0 ;
   }
-  if(waterfall != null && waterfall.life < 40.0){ }//stopFire();}
+  if(waterfall != null && waterfall.life < 40.0){ stopFire();}
   
   if(collisionList.get(0).checkCollision()){
     toggleWaterfall();
@@ -121,7 +121,25 @@ void draw(){
   surface.setTitle("World FPS: "+ str(round(frameRate)) +"\n") ;
 }
 
-
+void drawQuad(float x, float y, float z, float size, color color_, float time){
+    float rotation = 0;
+    float x_opp = x + size*cos(rotation);//random(0, size);
+    float y_opp = y + size; //random(0, size);
+    float z_opp = z + size*sin(rotation); //random(0, size);
+    int imgHeight = fireTexture.height;
+    int imgWidth = fireTexture.width;
+    noStroke();
+    fill(color_);
+    tint(color_);
+    beginShape(QUAD_STRIP);
+    texture(fireTexture);
+    vertex(x,y,z,0,0);
+    vertex(x,y_opp,z,0,imgHeight);
+    vertex(x_opp,y,z_opp,imgWidth,0);
+    vertex(x_opp,y_opp,z_opp,imgWidth,imgHeight);
+    endShape();
+  }
+  
 float time = 0.0;
 void drawWorld(){
   // Draw collision spheres to debug.
@@ -131,11 +149,19 @@ void drawWorld(){
     }
   }
   
-  ////Test
-  //time += 0.1;
-  //drawQuad(0,0,0, 10, color(255,214,53), fireTexture, time);
+  //pointLight(255,255,255,200.0,00.0,-200.0);
+  //pushMatrix();
+  //translate(200.0,0.0,-200.0);
+  //sphere(3);
+  //popMatrix();
   
-  // Draw the hill
+  //pointLight(255,255,255,98.0,50.0,60.0);
+  //Test
+  //time += 0.1;
+  //drawQuad(0,0,0, 10, color(255,214,53), time);
+  //drawQuad(2,2,2, 10, color(255,214,53), time);
+  
+   //Draw the hill
   pushMatrix();
   rotateX(PI);
   rotateY(PI/2);

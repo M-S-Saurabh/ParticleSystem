@@ -25,6 +25,14 @@ class FireParticleSystem{
     lifespan = 100.0;
   }
   
+  void drawLights(){
+    for(Ray point : firePoints){
+      if( (int)random(0,5) % 2 == 0){
+        pointLight(255,255,255,point.x, point.y-20.0, point.z);
+      }
+    }
+  }
+  
   void addParticle(){
     for(Ray origin: this.firePoints){
       if(smoke){
@@ -51,6 +59,7 @@ class FireParticleSystem{
       return;
     }
     print("particles:"+str(particles.size())+"\n");
+    this.drawLights();
     // increase the number of particles creates more realistic effect
     if(particles.size() < this.maxParticles){
       for(int i=0; i<300; i++){
