@@ -21,6 +21,7 @@ Ray fireOrigin = new Ray(190, 100, 0) ;
 boolean burning = false ;
 int burningCount = 30 ;
 float fireRadius = 10 ;
+PImage fireTexture;
 
 boolean debug_collisions = false;
 ArrayList<collisionSphere> collisionList = null;
@@ -54,6 +55,7 @@ void setup(){
   grassMossy = loadImage("textures/grass_mossy.png");
   wizard = loadShape("wizard.obj");
   hills = new ArrayList<PShape>();
+  fireTexture = loadImage("textures/fire.png");
   for(int i=0; i<3; i++){
     hills.add(loadShape("terrain/Terrain"+str(i+2)+".obj"));
   }
@@ -139,6 +141,8 @@ void draw(){
   surface.setTitle("World FPS: "+ str(round(frameRate)) +"\n") ;
 }
 
+
+float time = 0.0;
 void drawWorld(){
   // Draw collision spheres to debug.
   if(debug_collisions){
@@ -146,6 +150,10 @@ void drawWorld(){
       sph.drawSelf();
     }
   }
+  
+  ////Test
+  //time += 0.1;
+  //drawQuad(0,0,0, 10, color(255,214,53), fireTexture, time);
   
   // Draw the hill
   pushMatrix();

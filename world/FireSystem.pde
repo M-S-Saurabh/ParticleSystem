@@ -5,6 +5,7 @@ void endFires(){
 class FireParticleSystem{
   ArrayList<Particle> particles;
   ArrayList<Ray> firePoints;
+  PImage fireTexture = loadImage("textures/fire.png");
   boolean smoke = false;
   float lifespan = 100.0;
   float maxParticles = 10000;
@@ -38,7 +39,7 @@ class FireParticleSystem{
         float theta = 2*PI*random(0, 1);
         //Ray tempOrigin = new Ray(origin.x+random(-10,+10), origin.y, origin.z);
         Ray tempOrigin = new Ray(origin.x + radius*cos(theta), origin.y, origin.z + radius*sin(theta));
-        particles.add(new FireParticle(tempOrigin));
+        particles.add(new FireParticle(tempOrigin, fireTexture));
       }
     }
   }

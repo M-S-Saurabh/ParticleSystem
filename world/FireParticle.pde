@@ -3,6 +3,7 @@ class Particle{
   Ray origin;
   Ray velocity;
   Ray acceleration;
+  PImage texture;
   color splColor; 
   float lifespan;
   float death;
@@ -17,6 +18,9 @@ class Particle{
     display();
   }
   void update(){
+    //if(lifespan < 50.0){
+    //  return;
+    //}
     velocity.add(acceleration);
     location.add(velocity);
     alpha -= 10.0;
@@ -45,7 +49,7 @@ class Particle{
     lifespan = 52.0;
     alpha = 255.0;
     death = random(-10,10);
-    size = random(0.7,1.2);
+    size = random(5,10);
   }
   boolean isDead(){
     if(lifespan<death){
@@ -59,19 +63,45 @@ class Particle{
 class FireParticle extends Particle{
   color[] flameColors = {color(100,255),color(183,33,33),color(255,102,0), color(255,214,53)};
   
-  FireParticle(Ray l){
+  FireParticle(Ray l, PImage fireTexture){
     super(l);
     this.splColor = color(236, 85+random(-100,100), 17, this.alpha);
+    this.texture = fireTexture;
+  }
+  
+  void drawQuad(float x, float y, float z, float size){
+    float x_opp = x + size;//random(0, size);
+    float y_opp = y + size; //random(0, size);
+    float z_opp = z + size; //random(0, size);
+    int imgHeight = texture.height;
+    int imgWidth = texture.width;
+    pushMatrix();
+    beginShape(QUAD_STRIP);
+    texture(texture);
+    translate(x,y,z);
+    //rotateY(lifespan);
+    vertex(0,0,0,0);
+    vertex(0,size,0,imgHeight);
+    vertex(size,0,imgWidth,0);
+    vertex(size,size,imgWidth,imgHeight);
+    //vertex(x,y,z,0,0);
+    //vertex(x,y_opp,z,0,imgHeight);
+    //vertex(x_opp,y,z,imgWidth,0);
+    //vertex(x_opp,y_opp,z,imgWidth,imgHeight);
+    endShape();
+    popMatrix();
   }
   
   @Override
   void display(){
     color tempColor = flameColors[(int)(lifespan/13.0)];
-    stroke(tempColor);
-    fill(tempColor);
-    float s = 1.0;
-    line(location.x, location.y, location.z,
-         location.x+random(-s,s),location.y+random(-s,s), location.z+random(-s,s));
+    //stroke(tempColor);
+    noStroke();
+    tint(tempColor);
+    //float s = 1.0;
+    //line(location.x, location.y, location.z,
+    //     location.x+random(-s,s),location.y+random(-s,s), location.z+random(-s,s));
+    drawQuad(location.x, location.y, location.z, this.size);
   }
 }
 
