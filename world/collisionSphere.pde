@@ -17,6 +17,7 @@ class collisionSphere{
   
   void drawSelf(){
     pushMatrix();
+    stroke(255) ;
     translate(x,y,z);
     fill(255,0);
     sphere(size);

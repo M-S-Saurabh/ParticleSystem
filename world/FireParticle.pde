@@ -137,12 +137,16 @@ class SmokeParticle extends Particle{
 }
 
 class ExplosionParticle extends Particle {
-  ExplosionParticle(Ray l, Ray v, Ray a, color c){
+  
+  float maxRadius ;
+  
+  ExplosionParticle(Ray l, Ray v, Ray a, color c, float r){
     super(l) ;
     this.splColor = c ;
     this.velocity = v ;
     this.acceleration = a ;
     this.lifespan = 30 ;
+    this.maxRadius = r ;
   }
   
   @Override
@@ -150,5 +154,10 @@ class ExplosionParticle extends Particle {
     velocity.add(acceleration);
     location.add(velocity);
     lifespan -= 1 ;
+    float r = Ray.dist(this.location, this.origin) ;
+    if( maxRadius > 0.0 && r >= maxRadius){
+      velocity.sub(velocity) ;
+      acceleration.sub(acceleration) ;
+    }
   }
 }

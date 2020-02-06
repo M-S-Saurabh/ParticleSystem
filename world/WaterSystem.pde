@@ -8,11 +8,13 @@ class Waterfall {
   float river_r = 100.0;
   float river_w = 200.0;
   int maxParticles = 10000;
+  collisionSphere cs ;
   
   Waterfall(Ray position) {
     origin = position.copy();
     particles = new ArrayList<WaterParticle>();
     texture = loadImage("textures/smoke.png");
+    cs = new collisionSphere(100,100,0,20) ;
   }
 
   void addParticle() {
@@ -24,6 +26,7 @@ class Waterfall {
   }
 
   void update(){
+    checkCollision() ;
     print("water particles:"+str(particles.size())+"\n");
     addParticle();
     for(WaterParticle p : particles){
@@ -36,6 +39,8 @@ class Waterfall {
   
   void display(){
     // Draw River.
+    cs.drawSelf() ;
+    println(str(cs.x) + " " + str(cs.y) + " " + str(cs.z)) ;
     pushMatrix();
     translate(0,99,0);
     rotateX(PI/2);
@@ -60,6 +65,39 @@ class Waterfall {
     display();
     life -= 1.0;
   }
+  
+  void moveSphereForward(){
+    //cs.x = mouseX - gx ;
+    //cs.z = mouseY - gy ;
+    ////cs.z = gz ;
+    //println("globe" + str(gx) + " " + str(gy) + " " + str(gz)) ;
+    //cs.z = screenZ(mouseX, mouseY) ;
+    cs.z += 5 ;
+    cs.location = new Ray(cs.x, cs.y, cs.z) ;
+  }
+  
+  void moveSphereBackward(){
+    //cs.x = mouseX - gx ;
+    //cs.z = mouseY - gy ;
+    ////cs.z = gz ;
+    //println("globe" + str(gx) + " " + str(gy) + " " + str(gz)) ;
+    //cs.z = screenZ(mouseX, mouseY) ;
+    cs.z -= 5 ;
+    cs.location = new Ray(cs.x, cs.y, cs.z) ;
+  }
+  
+  void checkCollision(){
+    for ( WaterParticle p : particles){
+      float d = Ray.dist(p.position, cs.location) ;
+      if (cs.size > d){
+        Ray norm = Ray.sub(p.position, cs.location) ;
+        norm = norm.normalize() ;
+        Ray bounce = norm.mult(p.velocity.dot(norm));
+        p.velocity = p.velocity.sub(bounce.mult(1.1)) ;
+      } 
+    }
+    
+  }
 }
 
 
@@ -81,7 +119,7 @@ class WaterParticle {
   
   void respawn(Ray l){
     acceleration = new Ray(0, random(0.25,0.35), 0);
-    velocity = new Ray(random(1.5,2.5), 0.0, random(-0.5, 0.5));
+    velocity = new Ray(random(0.5,2.5), 0.0, random(-0.5, 0.5));
     position = l.copy();
     origin = l.copy();
     life = 200.0;
@@ -143,4 +181,5 @@ class WaterParticle {
     tempColor = color(red(splColor), green(splColor), blue(splColor));
     drawQuad(position.x, position.y, position.z, s, tempColor);
   }
+  
 }

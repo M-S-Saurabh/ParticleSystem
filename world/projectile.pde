@@ -112,7 +112,7 @@ class WaterSpellProjectile extends Projectile{
       float th = 2*PI*sqrt(random(0,1)) ;
       Ray tv = new Ray(r*cos(th), random(-30, -50), r*sin(th)) ;
       Ray ta = new Ray(0 , 2, 0) ;
-      exp.add(new ExplosionParticle(this.location, tv, ta, this.splColor)) ;
+      exp.add(new ExplosionParticle(this.location, tv, ta, this.splColor, 0.0)) ;
     }
   }
   
@@ -152,13 +152,13 @@ class FireSpellProjectile extends Projectile{
     this.acceleration = new Ray(0.0, 0.0, 0.0) ;
     this.exp = new ArrayList<ExplosionParticle>() ;
     for(int i = 0 ; i < 10000 ; i++) {
-      float r = 50*sqrt(random(0,1)) ;
+      float r = 5*sqrt(random(0,1)) ;
       float th = 2*PI*sqrt(random(0,1)) ;
-      float y = random(-2, 2) ;
+      float y = random(10, 20) ;
       Ray l = new Ray(this.location.x + r*cos(th), this.location.y + y, this.location.z + r*sin(th)) ;
       Ray tv = new Ray(r*cos(th), 0, r*sin(th)) ;
       Ray ta = new Ray(0 , 0, 0) ;
-      exp.add(new ExplosionParticle(l, tv, ta, this.splColor)) ;
+      exp.add(new ExplosionParticle(l, tv, ta, this.splColor, 60.0)) ;
     }
   }
 }
