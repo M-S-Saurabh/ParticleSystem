@@ -127,23 +127,22 @@ void draw(){
 }
 
 void drawQuad(float x, float y, float z, float size, color color_, float time){
-    float rotation = 0;
-    float x_opp = x + size*cos(rotation);//random(0, size);
-    float y_opp = y + size; //random(0, size);
-    float z_opp = z + size*sin(rotation); //random(0, size);
-    int imgHeight = fireTexture.height;
-    int imgWidth = fireTexture.width;
-    noStroke();
-    fill(color_);
-    tint(color_);
-    beginShape(QUAD_STRIP);
-    texture(fireTexture);
-    vertex(x,y,z,0,0);
-    vertex(x,y_opp,z,0,imgHeight);
-    vertex(x_opp,y,z_opp,imgWidth,0);
-    vertex(x_opp,y_opp,z_opp,imgWidth,imgHeight);
-    endShape();
-  }
+  float rotation = 0;
+  float x_opp = x + size*cos(rotation);//random(0, size);
+  float y_opp = y + size; //random(0, size);
+  float z_opp = z + size*sin(rotation); //random(0, size);
+  int imgHeight = fireTexture.height;
+  int imgWidth = fireTexture.width;
+  noStroke();
+  fill(color_);
+  beginShape(QUAD_STRIP);
+  texture(fireTexture);
+  vertex(x,y,z,0,0);
+  vertex(x,y_opp,z,0,imgHeight);
+  vertex(x_opp,y,z_opp,imgWidth,0);
+  vertex(x_opp,y_opp,z_opp,imgWidth,imgHeight);
+  endShape();
+}
   
 float time = 0.0;
 void drawWorld(){
@@ -184,6 +183,7 @@ void drawWorld(){
   translate(8,0,0);
   shape(sh);
   popMatrix() ;
+  pointLight(255,255,255,200,-200,0);
   
   // Draw ice mage.
   pushMatrix();
@@ -204,10 +204,12 @@ void drawWorld(){
   
   // Draw the ground
   pushMatrix();
-  stroke(150, 75, 0);
+  //stroke(150, 75, 0);
   //fill(150, 75, 0) ;
+  //fill(86,176,0);
   translate(0,100,0);
   beginShape(QUAD_STRIP);
+  noTint();
   texture(grassMossy);
   vertex(-200, 0,-250,0,0);
   vertex(-200, 0,+250,0,512);
