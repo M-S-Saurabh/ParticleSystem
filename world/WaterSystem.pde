@@ -17,7 +17,7 @@ class Waterfall {
 
   void addParticle() {
     if(particles.size() < maxParticles){
-      for(int i=0; i<50; i++){
+      for(int i=0; i<30; i++){
         particles.add(new WaterParticle(new Ray(origin.x,origin.y,origin.z+random(-5,5))));
       }
     }
@@ -43,7 +43,7 @@ class Waterfall {
     stroke(splColor,100);
     // Grow the mouth of river (ellipse part)
     if(life < 200.0){
-      float temp_r = (life<100.0)? river_r : river_r * (1 - (life-100.0)/100.0);
+      float temp_r = 0;//(life<100.0)? river_r : river_r * (1 - (life-100.0)/100.0);
       ellipse(40, 0, temp_r, 0.7*temp_r);
     }
     // Grow length of the river
@@ -80,8 +80,8 @@ class WaterParticle {
   }
   
   void respawn(Ray l){
-    acceleration = new Ray(0, random(0.25,0.35), 0);
-    velocity = new Ray(random(1.5,2.5), 0.0, random(-0.5, 0.5));
+    acceleration = new Ray(0, random(0.03,0.05), 0);
+    velocity = new Ray(random(0.5,0.7), 0.0, random(-0.2, 0.2));
     position = l.copy();
     origin = l.copy();
     life = 200.0;
@@ -105,7 +105,7 @@ class WaterParticle {
       position.y = 98.0;
       velocity.y *= -0.35;
     }
-    if(river ==false && abs(velocity.y) < 0.1){
+    if(river ==false && abs(velocity.y) < 0.1 && position.y > 90.0){
       river = true;
     }
   }
@@ -118,10 +118,10 @@ class WaterParticle {
     int imgHeight = texture.height;
     int imgWidth = texture.width;
     noStroke();
-    fill(color_);
     tint(color_);
+    fill(color_);
     beginShape(QUAD_STRIP);
-    //texture(texture);
+    texture(texture);
     vertex(x,y,z,0,0);
     vertex(x_opp,y_opp,z,0,imgHeight);
     vertex(x,y,z_opp,imgWidth,0);
@@ -132,15 +132,14 @@ class WaterParticle {
   // Method to display
   void display() {
     color tempColor;
-    //if(river){
-    //  tempColor = color(red(splColor), green(splColor), blue(splColor));
-    //}else{
-    //  tempColor = color(255.0);
-    //}
+    if(river){
+      tempColor = color(red(splColor), green(splColor), blue(splColor));
+    }else{
+      tempColor = color(255.0);
+    }
     float s = 5.0;
     //line(position.x, position.y, position.z, position.x+random(-s,s),position.y+random(-s,s), position.z+random(-s,s));
     noStroke();
-    tempColor = color(red(splColor), green(splColor), blue(splColor));
     drawQuad(position.x, position.y, position.z, s, tempColor);
   }
 }

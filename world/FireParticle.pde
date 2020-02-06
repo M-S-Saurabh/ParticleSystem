@@ -79,6 +79,10 @@ class FireParticle extends Particle{
     int imgWidth = texture.width;
     beginShape(QUAD_STRIP);
     texture(texture);
+    //vertex(0,0,0,0);
+    //vertex(0,size,0,imgHeight);
+    //vertex(size,0,imgWidth,0);
+    //vertex(size,size,imgWidth,imgHeight);
     vertex(x,y,z,0,0);
     vertex(x,y_opp,z,0,imgHeight);
     vertex(x_opp,y,z_opp,imgWidth,0);
