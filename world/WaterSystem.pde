@@ -8,11 +8,13 @@ class Waterfall {
   float river_r = 100.0;
   float river_w = 200.0;
   int maxParticles = 10000;
+  collisionSphere cs ;
   
   Waterfall(Ray position) {
     origin = position.copy();
     particles = new ArrayList<WaterParticle>();
     texture = loadImage("textures/smoke.png");
+    cs = new collisionSphere(100,100,40,20) ;
   }
 
   void addParticle() {
@@ -24,6 +26,7 @@ class Waterfall {
   }
 
   void update(){
+    checkCollision() ;
     print("water particles:"+str(particles.size())+"\n");
     addParticle();
     for(WaterParticle p : particles){
@@ -36,6 +39,8 @@ class Waterfall {
   
   void display(){
     // Draw River.
+    cs.drawSelf() ;
+    println(str(cs.x) + " " + str(cs.y) + " " + str(cs.z)) ;
     pushMatrix();
     translate(0,99,0);
     rotateX(PI/2);
@@ -59,6 +64,39 @@ class Waterfall {
     update();
     display();
     life -= 1.0;
+  }
+  
+  void moveSphereForward(){
+    //cs.x = mouseX - gx ;
+    //cs.z = mouseY - gy ;
+    ////cs.z = gz ;
+    //println("globe" + str(gx) + " " + str(gy) + " " + str(gz)) ;
+    //cs.z = screenZ(mouseX, mouseY) ;
+    cs.z += 5 ;
+    cs.location = new Ray(cs.x, cs.y, cs.z) ;
+  }
+  
+  void moveSphereBackward(){
+    //cs.x = mouseX - gx ;
+    //cs.z = mouseY - gy ;
+    ////cs.z = gz ;
+    //println("globe" + str(gx) + " " + str(gy) + " " + str(gz)) ;
+    //cs.z = screenZ(mouseX, mouseY) ;
+    cs.z -= 5 ;
+    cs.location = new Ray(cs.x, cs.y, cs.z) ;
+  }
+  
+  void checkCollision(){
+    for ( WaterParticle p : particles){
+      float d = Ray.dist(p.position, cs.location) ;
+      if (cs.size > d){
+        Ray norm = Ray.sub(p.position, cs.location) ;
+        norm = norm.normalize() ;
+        Ray bounce = norm.mult(p.velocity.dot(norm));
+        p.velocity = p.velocity.sub(bounce.mult(1.1)) ;
+      } 
+    }
+    
   }
 }
 
@@ -144,4 +182,5 @@ class WaterParticle {
     noStroke();
     drawQuad(position.x, position.y, position.z, s, tempColor);
   }
+  
 }

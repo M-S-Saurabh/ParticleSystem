@@ -14,14 +14,19 @@ ArrayList<Ray> waterPoints;
 // MagiSpell system
 MagicSpell ms;
 
+float gx ;
+float gy ;
+float gz ;
+
 
 // FireParticles System
 FireParticleSystem fires = null;
 Ray fireOrigin = new Ray(190, 95, 0) ;
 boolean burning = false ;
-int burningCount = 3000 ;
+int burningCount = 60 ;
 float fireRadius = 10 ;
 PImage fireTexture;
+boolean rotationMode = true ;
 
 boolean debug_collisions = false;
 ArrayList<collisionSphere> collisionList = null;
@@ -406,5 +411,29 @@ void keyPressed() {
   
   if (keyCode == 16 || keyCode == 11){
      translateCamera() ; 
+  }
+  
+  if (keyCode == 65){
+    rotationMode = !rotationMode ;
+    if (rotationMode == false){
+      gx = screenX(0, 0, 0) ;
+      gy = screenY(0, 0, 0) ;
+      gz = screenZ(0, 0, 0) ;
+    }
+    cam.setActive(rotationMode) ;
+  }
+}
+
+void mousePressed(){
+  if(rotationMode == false){
+    if (waterfall != null){
+      if (mouseButton == LEFT){
+        waterfall.moveSphereForward() ;
+      }
+      if (mouseButton == RIGHT){
+        waterfall.moveSphereBackward() ;
+      }
+      
+    }
   }
 }
