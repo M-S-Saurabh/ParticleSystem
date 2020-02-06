@@ -17,7 +17,7 @@ MagicSpell ms;
 
 // FireParticles System
 FireParticleSystem fires = null;
-Ray fireOrigin = new Ray(190, 100, 0) ;
+Ray fireOrigin = new Ray(190, 95, 0) ;
 boolean burning = false ;
 int burningCount = 3000 ;
 float fireRadius = 10 ;
@@ -29,6 +29,7 @@ ArrayList<collisionSphere> collisionList = null;
 void setup(){
   
   size(1000,1000,P3D);
+  
   // Setup the camera
   cam = new PeasyCam(this, 425);
   cam.setMinimumDistance(50);
@@ -89,7 +90,11 @@ void translateCamera(){
 }
 
 void runParticles(){
-  if(waterfall != null){waterfall.run();}
+  if(waterfall != null){
+    hint(DISABLE_DEPTH_MASK);
+    waterfall.run();
+    hint(ENABLE_DEPTH_MASK);
+  }
   if(ms != null){ms.run();}
   if (burning){
     burningCount-= 1 ;
@@ -150,8 +155,8 @@ void drawWorld(){
   
   //pointLight(255,255,255,200.0,00.0,-200.0);
   //pushMatrix();
-  //translate(200.0,0.0,-200.0);
-  //sphere(3);
+  //translate(0.0,0.0,0.0);
+  //sphere(5);
   //popMatrix();
   
   //pointLight(255,255,255,98.0,50.0,60.0);

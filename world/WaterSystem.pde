@@ -105,7 +105,7 @@ class WaterParticle {
       position.y = 98.0;
       velocity.y *= -0.35;
     }
-    if(river ==false && abs(velocity.y) < 0.1 && position.y > 90.0){
+    if(river ==false && abs(velocity.y) < 0.1 && position.y > 95.0){
       river = true;
     }
   }
@@ -117,6 +117,7 @@ class WaterParticle {
     float z_opp = z + size; //random(0, size);
     int imgHeight = texture.height;
     int imgWidth = texture.width;
+    //hint(DISABLE_DEPTH_MASK);
     noStroke();
     tint(color_);
     fill(color_);
@@ -127,6 +128,7 @@ class WaterParticle {
     vertex(x,y,z_opp,imgWidth,0);
     vertex(x_opp,y_opp,z_opp,imgWidth,imgHeight);
     endShape();
+    //hint(ENABLE_DEPTH_MASK);
   }
   
   // Method to display
