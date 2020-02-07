@@ -27,6 +27,7 @@ class MagicSpell{
   }
   
   void run(){
+    //fireBall.play() ;
     if(proj.isDead()){
       // projectile died.
       return;

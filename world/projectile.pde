@@ -24,6 +24,7 @@ class Projectile{
     update();
     display();
     if (exp != null){
+      fireBall.play() ;
       for(ExplosionParticle e : exp){
          e.run() ;
       }
@@ -102,6 +103,7 @@ class WaterSpellProjectile extends Projectile{
   
   @Override
   void collision(){
+    fireBall = minim.loadFile("waterball.mp3") ;
     explode = true;
     this.lifespan = 20.0;
     this.velocity = new Ray(0.0, 0.0, 0.0) ;
@@ -146,6 +148,7 @@ class FireSpellProjectile extends Projectile{
   
   @Override
   void collision(){
+    fireBall = minim.loadFile("fireball.mp3") ;
     explode = true;
     this.lifespan = 20.0;
     this.velocity = new Ray(0.0, 0.0, 0.0) ;

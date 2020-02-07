@@ -32,7 +32,7 @@ class Waterfall {
       removeCS = false;
     }
     checkCollision() ;
-    print("water particles:"+str(particles.size())+"\n");
+    //print("water particles:"+str(particles.size())+"\n");
     addParticle();
     for(WaterParticle p : particles){
       p.run();
@@ -92,12 +92,27 @@ class Waterfall {
   void checkCollision(){
     for ( WaterParticle p : particles){
       if(cs == null){break;}
-      float d = Ray.dist(p.position, cs.location) ;
+      Ray next = p.velocity ;
+      Ray np = Ray.add(p.position, next) ;
+      Ray pl = Ray.sub(cs.location, p.position) ;
+      Ray cross = next.cross(pl) ;
+      float area = cross.mag() ;
+      float d = area/next.mag() ;
+      float d1 = Ray.dist(cs.location,np) ;
+      float d2 = Ray.dist(cs.location, p.position) ;
+      float d3 = p.velocity.mag() ;
       if (cs.size > d){
-        Ray norm = Ray.sub(p.position, cs.location) ;
-        norm = norm.normalize() ;
-        Ray bounce = norm.mult(p.velocity.dot(norm));
-        p.velocity = p.velocity.sub(bounce.mult(1.1)) ;
+        float mid = sqrt(d2*d2 - d*d) ;
+        float rmid = sqrt(d1*d1 - d*d) ;
+        float diff = d3 - (mid + rmid) ;
+        //println(str(cs.location.x) + " " + str(cs.location.y) + " " + str(cs.location.z)) ;
+        if (d1 < cs.size || abs(diff) < 1.5 ){
+          Ray norm = Ray.sub(p.position, cs.location) ;
+          norm = norm.normalize() ;
+          Ray bounce = norm.mult(p.velocity.dot(norm));
+          p.velocity = p.velocity.sub(bounce.mult(1.2)) ;
+          //println("collision detected") ;
+        }
       } 
     }
     
@@ -159,7 +174,6 @@ class WaterParticle {
     float z_opp = z + size; //random(0, size);
     int imgHeight = texture.height;
     int imgWidth = texture.width;
-    //hint(DISABLE_DEPTH_MASK);
     noStroke();
     tint(color_);
     fill(color_);

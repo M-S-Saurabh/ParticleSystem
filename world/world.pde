@@ -1,6 +1,9 @@
 import peasy.*;
+import ddf.minim.*;
 
 PeasyCam cam;
+Minim minim ;
+AudioPlayer waterPlayer, firePlayer, fireBall ;
 
 PShape sh, icemage, wizard;
 ArrayList<PShape> hills;
@@ -43,6 +46,10 @@ void setup(){
   cam.setMaximumDistance(800);
   cam.setYawRotationMode();
   
+  minim = new Minim(this) ;
+  waterPlayer = minim.loadFile("waterfall.mp3");
+  firePlayer = minim.loadFile("fire.mp3") ;
+  
   waterPoints = new ArrayList<Ray>();
   waterPoints.add(new Ray(2,45,0));
   
@@ -60,7 +67,7 @@ void setup(){
   Dw = loadShape("OBJ/Willow_Dead_3.obj");
   Db = loadShape("OBJ/BirchTree_Dead_1.obj");
   Dp = loadShape("OBJ/CommonTree_Dead_2.obj");
-  grassMossy = loadImage("textures/grass_mossy.png");
+  grassMossy = loadImage("textures/Soil.jpg");
   wizard = loadShape("wizard.obj");
   hills = new ArrayList<PShape>();
   fireTexture = loadImage("textures/fire.png");
@@ -72,11 +79,11 @@ void setup(){
 void translateCamera(){
   if(keyCode == UP){
     PeasyDragHandler zoomer =  cam.getZoomDragHandler();
-    zoomer.handleDrag(-1.0, -1.0) ;
+    zoomer.handleDrag(-5.0, -5.0) ;
   }
   if(keyCode == DOWN){
     PeasyDragHandler zoomer =  cam.getZoomDragHandler();
-    zoomer.handleDrag(1.0, 1.0) ;
+    zoomer.handleDrag(5.0, 5.0) ;
   }
   if(keyCode == LEFT){
     PeasyDragHandler pan =  cam.getPanDragHandler();
@@ -98,6 +105,7 @@ void translateCamera(){
 
 void runParticles(){
   if(waterfall != null){
+    waterPlayer.play() ;
     hint(DISABLE_DEPTH_MASK);
     waterfall.run();
     hint(ENABLE_DEPTH_MASK);
@@ -107,6 +115,7 @@ void runParticles(){
     burningCount-= 1 ;
   }
   if(fires != null){
+    firePlayer.play() ;
     fires.run();
     fireRadius += 10.0 ;
   }
@@ -300,6 +309,10 @@ void greenScene(){
 }
 
 void burntScene(){
+  pointLight(255.0,165.0,0.0, 170,98, -100);
+  pointLight(255.0,165.0,0.0, 170,98, 200);
+  
+  
   pushMatrix();
   rotateX(PI);
   translate(170, -100, 10);
@@ -359,15 +372,21 @@ void burntScene(){
 
 void toggleWaterfall(){
   if(waterfall == null){
+    if (waterPlayer == null){
+      waterPlayer = minim.loadFile("waterfall.mp3");
+    }
     for(Ray point: waterPoints){
       waterfall = new Waterfall(point);
+      if(CS != null){waterfall.cs = CS;}
     }
   }else{
     waterfall = null;
+    waterPlayer.pause() ;
   }
 }
 
 void stopFire(){
+  firePlayer.pause() ;
   burningCount = 30 ;
   fires = null ;
   burning = false ;
@@ -379,6 +398,7 @@ void toggleForestfire(){
     fires.firePoints.add(fireOrigin);
     burning = true ;
   }else{
+    firePlayer.pause() ;
     burningCount = 30 ;
     fires = null ;
     burning = false ;
@@ -471,7 +491,6 @@ void mousePressed(){
 void mouseWheel(MouseEvent event){
   if(!rotationMode){
     float e = event.getCount();
-    print("mouse wheel:"+str(e)+"\n");
     if(CS != null){
       CS.updateX(e*10);
     }

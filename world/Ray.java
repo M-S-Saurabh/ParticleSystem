@@ -88,4 +88,11 @@ public class Ray {
     return this.div(m) ;
   }
   
+  Ray cross(Ray r2){
+    float i = this.y*r2.z - this.z*r2.y ;
+    float j = this.z*r2.x - this.x*r2.z ;
+    float k = this.x*r2.y - this.y*r2.x ;
+    return new Ray(i, j, k) ;
+  }
+  
 }
