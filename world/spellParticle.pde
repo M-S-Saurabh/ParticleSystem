@@ -2,6 +2,7 @@ class SpellParticle{
   Ray location;
   Ray velocity;
   Ray acceleration;
+  ArrayList<Ray> history;
   color splColor; 
   float lifespan;
   float death;

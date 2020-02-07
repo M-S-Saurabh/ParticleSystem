@@ -17,9 +17,10 @@ class collisionSphere{
   
   void drawSelf(){
     pushMatrix();
-    stroke(255) ;
+    //stroke(255) ;
+    noStroke();
     translate(x,y,z);
-    fill(255,0);
+    fill(255,0,0,255);
     sphere(size);
     popMatrix() ;
   }
@@ -27,6 +28,13 @@ class collisionSphere{
   void addDetector(Projectile obj){
     if(detectList == null){detectList = new ArrayList<Projectile>();}
     this.detectList.add(obj);
+  }
+  
+  void updateZY(float z, float y){
+    this.z = z; this.y = y;
+  }
+  void updateX(float dx){
+    this.x += dx;
   }
   
   void resetDetector(){

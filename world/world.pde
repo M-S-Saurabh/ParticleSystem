@@ -11,6 +11,8 @@ PImage grassMossy;
 Waterfall waterfall;
 ArrayList<Ray> waterPoints;
 
+collisionSphere CS;
+
 // MagiSpell system
 MagicSpell ms;
 
@@ -116,6 +118,11 @@ void runParticles(){
   if(collisionList.get(1).checkCollision()){
     toggleForestfire();
   }
+  if(!rotationMode && CS!=null){
+    //print(str(mouseX)+":"+str(mouseY)+"\n");
+    float scale = 0.2;
+    CS.updateZY(-(mouseX-500.0)*scale, (mouseY-500.0)*scale);
+  }
 }
 
 void draw(){
@@ -157,6 +164,7 @@ void drawWorld(){
       sph.drawSelf();
     }
   }
+  if(CS != null){CS.drawSelf();}
   
   //pointLight(255,255,255,200.0,00.0,-200.0);
   //pushMatrix();
@@ -215,6 +223,7 @@ void drawWorld(){
   translate(0,100,0);
   beginShape(QUAD_STRIP);
   noTint();
+  noFill();
   texture(grassMossy);
   vertex(-200, 0,-250,0,0);
   vertex(-200, 0,+250,0,512);
@@ -409,8 +418,18 @@ void keyPressed() {
     toggleForestfire();
   }
   
+  // PGUP and PGDOWN to move the world up and down 
   if (keyCode == 16 || keyCode == 11){
      translateCamera() ; 
+  }
+  
+  // Press Q to remove collision sphere.
+  if(keyCode == 81){
+    print("CS is null:"+str(CS==null)+"\n");
+    if(CS != null){
+      if(waterfall != null){waterfall.removeCS = true;}
+      CS = null;
+    }
   }
   
   if (keyCode == 65){
@@ -419,8 +438,19 @@ void keyPressed() {
       gx = screenX(0, 0, 0) ;
       gy = screenY(0, 0, 0) ;
       gz = screenZ(0, 0, 0) ;
+      cam.rotateY(PI/2);
+      cam.lookAt(120,0,0,100.0);
+      print("camera distance:"+str((float)cam.getDistance())+"\n");
+      cam.setActive(false);
+      CS = new collisionSphere(0,0,0,10.0);
+      if(waterfall != null){
+        waterfall.cs = CS;
+      }
+    }else{
+      cam.setActive(true);
+      cam.reset();
     }
-    cam.setActive(rotationMode) ;
+    //cam.setActive(rotationMode) ;
   }
 }
 
@@ -434,6 +464,16 @@ void mousePressed(){
         waterfall.moveSphereBackward() ;
       }
       
+    }
+  }
+}
+
+void mouseWheel(MouseEvent event){
+  if(!rotationMode){
+    float e = event.getCount();
+    print("mouse wheel:"+str(e)+"\n");
+    if(CS != null){
+      CS.updateX(e*10);
     }
   }
 }

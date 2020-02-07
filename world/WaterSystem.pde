@@ -1,3 +1,4 @@
+
 PImage texture;
 
 class Waterfall {
@@ -8,13 +9,13 @@ class Waterfall {
   float river_r = 100.0;
   float river_w = 200.0;
   int maxParticles = 10000;
-  collisionSphere cs ;
+  collisionSphere cs;
+  boolean removeCS = false;
   
   Waterfall(Ray position) {
     origin = position.copy();
     particles = new ArrayList<WaterParticle>();
     texture = loadImage("textures/smoke.png");
-    cs = new collisionSphere(100,100,40,20) ;
   }
 
   void addParticle() {
@@ -26,6 +27,10 @@ class Waterfall {
   }
 
   void update(){
+    if(removeCS){
+      cs = null;
+      removeCS = false;
+    }
     checkCollision() ;
     print("water particles:"+str(particles.size())+"\n");
     addParticle();
@@ -39,10 +44,8 @@ class Waterfall {
   
   void display(){
     // Draw River.
-    cs.drawSelf() ;
-    println(str(cs.x) + " " + str(cs.y) + " " + str(cs.z)) ;
     pushMatrix();
-    translate(0,99,0);
+    translate(0,100,0);
     rotateX(PI/2);
     fill(splColor);
     stroke(splColor,100);
@@ -55,7 +58,7 @@ class Waterfall {
     if(life < 100){
       rectMode(CENTER);
       float temp_w = (life<0.0)? river_w : river_w * (1 - (life-0.0)/100.0);
-      rect(70+(temp_w * 0.5), 0, temp_w, 30);
+      //rect(70+(temp_w * 0.5), 0, temp_w, 30);
     }
     popMatrix();
   }
@@ -88,6 +91,7 @@ class Waterfall {
   
   void checkCollision(){
     for ( WaterParticle p : particles){
+      if(cs == null){break;}
       float d = Ray.dist(p.position, cs.location) ;
       if (cs.size > d){
         Ray norm = Ray.sub(p.position, cs.location) ;
@@ -150,8 +154,8 @@ class WaterParticle {
   
   void drawQuad(float x, float y, float z, float size, color color_){
     float theta = atan(velocity.y/velocity.x);
-    float x_opp = x + size*cos(theta);//random(0, size);
-    float y_opp = y + size*sin(theta); //random(0, size);
+    float x_opp = x + size;//*cos(theta);//random(0, size);
+    float y_opp = y + size;//*sin(theta); //random(0, size);
     float z_opp = z + size; //random(0, size);
     int imgHeight = texture.height;
     int imgWidth = texture.width;
