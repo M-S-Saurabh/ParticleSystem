@@ -406,7 +406,7 @@ void toggleForestfire(){
 }
 
 void keyPressed() {
-  print("keyCode is:"+keyCode+"\n");
+  //print("keyCode is:"+keyCode+"\n");
   // reset camera constraints
   if (keyCode == 48) {
     cam.setYawRotationMode();
@@ -445,7 +445,7 @@ void keyPressed() {
   
   // Press Q to remove collision sphere.
   if(keyCode == 81){
-    print("CS is null:"+str(CS==null)+"\n");
+    //print("CS is null:"+str(CS==null)+"\n");
     if(CS != null){
       if(waterfall != null){waterfall.removeCS = true;}
       CS = null;
@@ -460,7 +460,7 @@ void keyPressed() {
       gz = screenZ(0, 0, 0) ;
       cam.rotateY(PI/2);
       cam.lookAt(120,0,0,100.0);
-      print("camera distance:"+str((float)cam.getDistance())+"\n");
+      //print("camera distance:"+str((float)cam.getDistance())+"\n");
       cam.setActive(false);
       CS = new collisionSphere(0,0,0,10.0);
       if(waterfall != null){

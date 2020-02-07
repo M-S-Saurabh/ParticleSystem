@@ -43,7 +43,7 @@ class collisionSphere{
   void resetDetector(){
     this.detectList = null;
   }
-  
+  // discrete collision detection
   //boolean checkCollision(){
   //  if(detectList == null){return false;}
   //  for(int i = detectList.size()-1; i>=0; i--){
@@ -58,7 +58,7 @@ class collisionSphere{
   //  }
   //  return false;
   //}
-  
+  // Continuous Collision Detection
   boolean checkCollision(){
     if(detectList == null){return false;}
     for(int i = detectList.size()-1; i>=0; i--){

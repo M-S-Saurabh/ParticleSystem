@@ -141,7 +141,7 @@ class WaterParticle {
     velocity = new Ray(random(0.5,0.7), 0.0, random(-0.2, 0.2));
     position = l.copy();
     origin = l.copy();
-    life = 200.0;
+    life = 300.0;
     alpha = 255.0;
     river = false;
     rotation = random(0,PI);

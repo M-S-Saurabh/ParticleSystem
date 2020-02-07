@@ -58,7 +58,7 @@ class FireParticleSystem{
       endFires();
       return;
     }
-    print("particles:"+str(particles.size())+"\n");
+    //print("particles:"+str(particles.size())+"\n");
     this.drawLights();
     // increase the number of particles creates more realistic effect
     if(particles.size() < this.maxParticles){
